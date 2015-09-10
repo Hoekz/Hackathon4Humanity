@@ -1,10 +1,3 @@
-app.controller('home', ["$scope", "group", "map", function($scope, group, map){
+app.controller('home', ["$scope", function($scope){
     $scope.message = "This is home";
-    group.ready(function(){
-        group.createGroup({
-            name: "James Hoekzema",
-            lat: 123.123,
-            lng: 123.123
-        });
-    });
 }]);

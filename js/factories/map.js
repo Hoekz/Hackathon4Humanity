@@ -1,7 +1,8 @@
-app.factory('map', ['$http', function($http){
+app.factory('map', ['memory', function(memory){
     var self = this;
     self.map = null;
     self.useCurrent = true;
+    var markers = {};
 
     self.createMap = function(){
         if(mapsReady){
@@ -27,10 +28,12 @@ app.factory('map', ['$http', function($http){
                 };
                 callback(self.location);
                 navigator.geolocation.watchPosition(function(loc){
-                    self.location = {
-                        lat: loc.coords.latitude,
-                        lng: loc.coords.longitude
-                    };
+                    if(self.useCurrent){
+                        self.location = {
+                            lat: loc.coords.latitude,
+                            lng: loc.coords.longitude
+                        };
+                    }
                 });
             });
         }
