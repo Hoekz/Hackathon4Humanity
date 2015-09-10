@@ -5,8 +5,17 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     var ref = new Firebase(url);
     var root = $firebaseObject(ref);
     var group = null;
+    var ready = false;
+    var onReady = function(){};
+
+    self.ready = function(listener){
+        if(listener) onReady = listener;
+        return ready
+    };
 
     root.$loaded().then(function(){
+        ready = true;
+        onReady();
         if(id && id in root){
             group = root[id];
         }
@@ -22,6 +31,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     };
 
     self.createGroup = function(creator, success){
+        if(!ready) return null;
         var key = generateKey();
         while(key in root) key = generateKey();
         root[key] = {
@@ -47,6 +57,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     };
 
     self.joinGroup = function(person, success){
+        if(!ready) return null;
         if(id in root){
             group = root[id];
             group.members.push({
@@ -63,6 +74,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     };
 
     self.leaveGroup = function(person, success){
+        if(!ready) return null;
         if(group){
             delete group.members[person];
         }
