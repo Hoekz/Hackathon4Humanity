@@ -74,6 +74,6 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     $interval(function(){
         id = $routeParams.id || null;
     }, 50);
-    
+
     return self;
 }]);

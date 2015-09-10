@@ -1,3 +1,3 @@
-app.controller('home', ["$scope", function($scope){
+app.controller('home', ["$scope", "group", "map", function($scope, group, map){
     $scope.message = "This is home";
 }]);
