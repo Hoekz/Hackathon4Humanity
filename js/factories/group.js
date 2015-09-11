@@ -5,20 +5,23 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     var ref = new Firebase(url);
     var root = $firebaseObject(ref);
     var group = null;
+    var userRef = null;
     var ready = false;
     var onReady = function(){};
 
     self.ready = function(listener){
         if(listener) onReady = listener;
-        return ready
+        return ready;
     };
 
     root.$loaded().then(function(){
+        console.log('Model Ready');
         ready = true;
-        onReady();
         if(id && id in root){
             group = root[id];
+            self.members = group.members;
         }
+        onReady();
     });
 
     var generateKey = function(){
@@ -44,13 +47,16 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
             chat: []
         };
         root[key].members[creator.name] = {
-            lat: creator.lat || null,
-            lng: creator.lng || null,
-            lastSeen: (new Date()).getTime(),
+            lat: creator.lat,
+            lng: creator.lng,
+            online: true,
             creator: true
         };
+        userRef = new Firebase(url + id + '/members/' + creator.name + '/online');
+        userRef.onDisconnect().update(Firebase.ServerValue.TIMESTAMP);
         root.$save().then(function(){
             group = root[key];
+            self.members = group.members;
             if(success) success(key);
         });
         return key;
@@ -60,17 +66,20 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
         if(!ready) return null;
         if(id in root){
             group = root[id];
-            group.members.push({
-                name: person.name,
+            group.members[person.name] = {
                 lat: person.lat || null,
                 lng: person.lng || null,
-                lastSeen: (new Date()).getTime(),
+                online: true,
                 creator: false
-            });
+            };
+            userRef = new Firebase(url + id + '/members/' + person.name + '/online');
+            userRef.onDisconnect().update(Firebase.ServerValue.TIMESTAMP);
             root.$save().then(function(){
                 if(success) success();
             });
+            return true;
         }
+        return false;
     };
 
     self.leaveGroup = function(person, success){
@@ -80,6 +89,14 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
         }
         root.$save().then(function(){
             if(success) success();
+        });
+    };
+
+    self.onNewMember = function(listener){
+        root.$watch(function(){
+            group = root[id];
+            self.members = group.members;
+            listener();
         });
     };
 
