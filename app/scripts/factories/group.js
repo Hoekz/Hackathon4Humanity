@@ -69,7 +69,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
             group.members[person.name] = {
                 lat: person.lat,
                 lng: person.lng,
-                creator: group.members[person.name].creator || false
+                creator: group.members[person.name] ? group.members[person.name].creator : false
             };
             root.$save().then(function(){
                 if(success) success();
@@ -80,6 +80,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     };
 
     self.online = function(person){
+        id = $routeParams.id || null;
         userRef = new Firebase(url + id + '/members/' + person + '/online');
         userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
         userRef.set(true);
