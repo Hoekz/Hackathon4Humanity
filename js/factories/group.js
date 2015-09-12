@@ -53,7 +53,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
             creator: true
         };
         userRef = new Firebase(url + id + '/members/' + creator.name + '/online');
-        userRef.onDisconnect().update(Firebase.ServerValue.TIMESTAMP);
+        userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
         root.$save().then(function(){
             group = root[key];
             self.members = group.members;
@@ -67,19 +67,22 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
         if(id in root){
             group = root[id];
             group.members[person.name] = {
-                lat: person.lat || null,
-                lng: person.lng || null,
-                online: true,
-                creator: false
+                lat: person.lat,
+                lng: person.lng,
+                creator: group.members[person.name].creator || false
             };
-            userRef = new Firebase(url + id + '/members/' + person.name + '/online');
-            userRef.onDisconnect().update(Firebase.ServerValue.TIMESTAMP);
             root.$save().then(function(){
                 if(success) success();
             });
             return true;
         }
         return false;
+    };
+
+    self.online = function(person){
+        userRef = new Firebase(url + id + '/members/' + person + '/online');
+        userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+        userRef.set(true);
     };
 
     self.leaveGroup = function(person, success){

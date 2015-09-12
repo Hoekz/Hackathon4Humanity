@@ -5,13 +5,18 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     };
 
     var setup = function(){
-        if(!(memory.name in group.members)){
+        if(!memory.name || !(memory.name in group.members)){
+            memory.name = prompt('name', '');
             group.joinGroup({
-                name: memory.name || prompt('name', ''),
+                name: memory.name,
                 lat: map.location.lat,
                 lng: map.location.lng
-            }, $scope.updateMap);
+            }, function(){
+                group.online(memory.name);
+                $scope.updateMap();
+            });
         }else{
+            group.online(memory.name);
             $scope.updateMap();
         }
         group.onNewMember($scope.updateMap);
