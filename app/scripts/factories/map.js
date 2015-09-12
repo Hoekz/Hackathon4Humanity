@@ -80,11 +80,11 @@ app.factory('map', ['memory', function(memory){
             }
         }
         var bounds = new google.maps.LatLngBounds();
-        for(var person in people){
-            if(!(person in group) || group[person].online !== true){
-                self.removePerson(person);
+        for(var peep in people){
+            if(!(peep in group) || group[peep].online !== true){
+                self.removePerson(peep);
             }else{
-                bounds.extend(people[person].getPosition());
+                bounds.extend(people[peep].getPosition());
             }
         }
         self.map.setCenter(bounds.getCenter());
@@ -105,7 +105,7 @@ app.factory('map', ['memory', function(memory){
                 animation: google.maps.Animation.DROP
             });
             var initials = key.split(' ');
-            initials.forEach(function(e, i, a){a[i] = e[0].toUpperCase()});
+            initials.forEach(function(e, i, a){a[i] = e[0].toUpperCase();});
             people[key].setIcon(generateImageUrl(initials));
         }
     };
