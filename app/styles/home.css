@@ -1,0 +1,28 @@
+.half-vh {
+	height:50vh;
+}
+.half-vh:first-child {
+	background:cyan;
+	font-family:'Montserrat';
+	font-weight:400;
+	font-size: 10vh;
+}
+.half-vh:last-child {
+	background:#333;
+}
+#home-header {
+	max-width:480px;
+	margin:10vh auto;
+	height:30vh;
+	text-align:center;
+}
+#home-header :nth-child(1) {
+	text-transform:uppercase;
+}
+#home-header :nth-child(2) {
+	font-size:1.5rem;
+	font-weight:700;
+}
+#home-header :nth-child(3) {
+	text-transform:uppercase;
+}

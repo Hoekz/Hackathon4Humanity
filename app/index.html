@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Center of Us</title>
+    <link href="styles/normalize.css" rel="stylesheet" />
+    <link href="styles/flex.css" rel="stylesheet" />
+    <link href="styles/home.css" rel="stylesheet" />
     <link href="styles/style.css" rel="stylesheet" />
 </head>
-<body ng-app="app">
-    <ng-view></ng-view>
+<body ng-app="app" class="layout vertical fullbleed">
+    <span id="browser-sync-binding"></span>
+    <ng-view class="flex layout vertical"></ng-view>
     <div id="map">
         <div id="map-view"></div>
     </div>
