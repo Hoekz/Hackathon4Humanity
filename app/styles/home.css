@@ -2,13 +2,16 @@
 	height:50vh;
 }
 .half-vh:first-child {
-	background:cyan;
+	background:#333;
 	font-family:'Montserrat';
 	font-weight:400;
 	font-size: 10vh;
 }
 .half-vh:last-child {
 	background:#333;
+}
+#home-view {
+	position:relative;
 }
 #home-header {
 	max-width:480px;
@@ -25,4 +28,24 @@
 }
 #home-header :nth-child(3) {
 	text-transform:uppercase;
+}
+#home-view :nth-child(2) {
+	padding:1em;
+}
+#get-started {
+	font-family: 'Slabo 27px', serif;
+	font-size:2em;
+	color: #99FF45;
+	text-shadow: 0 2px 0 black, 1px 1px 0 black;
+	position:fixed;
+	bottom:1rem;
+	left:1rem;
+	right:1rem;
+	background:#333;
+	text-align:center;
+	padding:1rem .5rem;
+	border-radius:3px;
+	border:1px solid black;
+	box-shadow:0 0 .25em 0 rgba(100, 100, 100, .8) inset;
+	text-transform:lowercase;
 }
