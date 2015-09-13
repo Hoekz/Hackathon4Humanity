@@ -8,7 +8,13 @@ app.factory('map', ['memory', function(memory){
     canvas.width = 32;
     canvas.height = 48;
     var context = canvas.getContext('2d');
-    var generateImageUrl = function(initials){
+    var generateImageUrl = function(name){
+        var str = name.toUpperCase().split(' ');
+        if(str.length > 1){
+            str = str[0].substr(0, 1) + str[1].substr(0, 1);
+        }else{
+            str = str[0];
+        }
         context.clearRect(0, 0, 32, 48);
         context.fillStyle = randomColor({luminosity: 'dark'});
         context.beginPath();
@@ -21,7 +27,7 @@ app.factory('map', ['memory', function(memory){
         context.textAlign = "center";
         context.textBaseline = "middle";
         context.fillStyle = "white";
-        context.fillText(initials[0] + initials[1], 16, 16, 24);
+        context.fillText(str.substr(0, 2), 16, 16, 24);
         return canvas.toDataURL();
     };
 
@@ -80,11 +86,11 @@ app.factory('map', ['memory', function(memory){
             }
         }
         var bounds = new google.maps.LatLngBounds();
-        for(var peep in people){
-            if(!(peep in group) || group[peep].online !== true){
-                self.removePerson(peep);
+        for(var person in people){
+            if(!(person in group) || group[person].online !== true){
+                self.removePerson(person);
             }else{
-                bounds.extend(people[peep].getPosition());
+                bounds.extend(people[person].getPosition());
             }
         }
         self.map.setCenter(bounds.getCenter());
@@ -104,9 +110,7 @@ app.factory('map', ['memory', function(memory){
                 title: key,
                 animation: google.maps.Animation.DROP
             });
-            var initials = key.split(' ');
-            initials.forEach(function(e, i, a){a[i] = e[0].toUpperCase();});
-            people[key].setIcon(generateImageUrl(initials));
+            people[key].setIcon(generateImageUrl(key));
         }
     };
 

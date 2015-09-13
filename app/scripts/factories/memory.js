@@ -11,7 +11,12 @@ app.factory('memory', ['$interval', function($interval){
         };
         for(var i = 0; i < localStorage.length; i++){
             var key = localStorage.key(i);
-            self.data[key] = JSON.parse(localStorage.getItem(key));
+            try{
+                self.data[key] = JSON.parse(localStorage.getItem(key));
+            }catch(e){
+                self.data[key] = localStorage.getItem(key);
+            }
+
         }
     };
 

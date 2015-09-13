@@ -1,12 +1,13 @@
-app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($firebaseObject, $routeParams, $interval){
+app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location', function($firebaseObject, $routeParams, $interval, $location){
     var self = this;
     var id = $routeParams.id || null;
-    var url = "https://centerofus.firebaseio.com/";
+    var url = "https://centerofus.firebaseio.com/groups/";
     var ref = new Firebase(url);
     var root = $firebaseObject(ref);
     var group = null;
     var userRef = null;
     var ready = false;
+    var delay = 0;
     var onReady = function(){};
 
     self.ready = function(listener){
@@ -80,10 +81,18 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
     };
 
     self.online = function(person){
+        //only allow valid groups and only allow a timestamp be set when not logged in
         id = $routeParams.id || null;
-        userRef = new Firebase(url + id + '/members/' + person + '/online');
-        userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
-        userRef.set(true);
+        if(id && (id in root)){
+            userRef = new Firebase(url + id + '/members/' + person + '/online');
+            userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+            userRef.on('value', function(){
+                userRef.set(true);
+            });
+            userRef.set(true);
+        }else{
+            $location.path('/');
+        }
     };
 
     self.leaveGroup = function(person, success){
@@ -96,11 +105,12 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', function($
         });
     };
 
-    self.onNewMember = function(listener){
+    self.onUpdate = function(listener){
         root.$watch(function(){
             group = root[id];
             self.members = group.members;
-            listener();
+            clearTimeout(delay);
+            delay = setTimeout(listener, 500);
         });
     };
 
