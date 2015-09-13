@@ -69,6 +69,9 @@ app.factory('map', ['memory', function(memory){
                         self.location.lng = loc.coords.longitude;
                     }
                 });
+            }, function(err){
+                //handle error. properties: code, message
+                console.log(err);
             });
         }else{
             callback(self.location);
