@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  overflow:hidden;
 }
 .layout.vertical.scroll, .vertical > .scroll {
   overflow-y:auto;

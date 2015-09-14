@@ -11,6 +11,10 @@ body{
 a {
     text-decoration:none;
 }
+h1, h2, h3, h4 {
+    margin:0;
+    margin-bottom:1rem;
+}
 .button {
     cursor:pointer;
 }

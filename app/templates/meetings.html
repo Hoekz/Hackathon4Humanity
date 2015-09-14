@@ -1,15 +1,31 @@
 <div id="meetings-action-bar" class="layout horizontal center">
-	<i class="mdi mdi-arrow-left" ng-class="{show: isAdding}"></i>
-	<div>Meetings</div>
+	<i class="mdi mdi-arrow-left" ng-class="{show: isAdding}" ng-click="hideAddPage()"></i>
+	<div>{{title}}</div>
 	<span class="flex"></span>
 	<i class="mdi mdi-dots-vertical"></i>
 </div>
-<div id="meetings-new-fab" class="noselect shadow-2" ng-click="isAdding = !isAdding">
-	<i class="mdi mdi-plus"></i>
+<div id="meetings-fab-holder" ng-class="{inverse: isAdding}">
+	<div id="meetings-new-fab" class="noselect shadow-2" ng-click="toggleAddPage()">
+		<i class="mdi mdi-plus"></i>
+	</div>
+	<div id="meetings-send-fab" class="noselect shadow-2" ng-click="genUrl()">
+		<i class="mdi mdi-send"></i>
+	</div>
 </div>
 <div class="flex layout vertical scroll">
 	<div style="margin-bottom:2000px"></div>
 </div>
 <div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
-	<div style="margin-bottom:2000px"></div>
+	<div id="meetings-location-map">
+		<h3>Your Location</h3>
+	</div>
+	<h3>Name this meeting</h3>
+	<input type="text" ng-model="newMeetingName">
+	<h3>Select your approved meeting locations</h3>
+	<label ng-repeat="location in locationTypes"> 
+		<input type="checkbox" ng-model="location.approved">
+		{{location.name}}
+	</label>
+	<span>{{newMeetingName}}</span>
+	<span>{{locationTypes}}</span>
 </div>
