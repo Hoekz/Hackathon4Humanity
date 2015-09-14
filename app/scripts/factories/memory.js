@@ -1,38 +1,24 @@
 app.factory('memory', ['$interval', function($interval){
     var self = this;
 
-    self.data = {
-        $: self
-    };
+    self.data = {};
 
     self.read = function(){
-        self.data = {
-            $: self
-        };
-        for(var i = 0; i < localStorage.length; i++){
-            var key = localStorage.key(i);
-            try{
-                self.data[key] = JSON.parse(localStorage.getItem(key));
-            }catch(e){
-                self.data[key] = localStorage.getItem(key);
-            }
-
+        var data = JSON.parse(localStorage.getItem('data') || "{}");
+        for(var prop in data){
+            self.data[prop] = data[prop];
         }
     };
 
     self.write = function(){
-        localStorage.clear();
-        for(var prop in self.data){
-            if(prop !== "$")
-                localStorage.setItem(prop, JSON.stringify(self.data[prop]));
-        }
+        localStorage.setItem('data', JSON.stringify(self.data));
     };
 
     self.erase = function(){
-        self.data = {
-            $: self
-        };
-        localStorage.clear();
+        for(var prop in self.data){
+            delete self.data[prop];
+        }
+        localStorage.removeItem('data');
     };
 
     self.read();
@@ -41,3 +27,7 @@ app.factory('memory', ['$interval', function($interval){
 
     return self.data;
 }]);
+
+//Usage:
+//passes the data object to any controller/caller, simply manipulate data on the memory
+//variable and it will be written to localStorage under the key 'data' (used to do all of localStorage)

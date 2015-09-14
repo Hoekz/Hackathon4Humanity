@@ -9,17 +9,14 @@ app.controller('create', ['$scope', 'group', 'memory', 'map', '$location', funct
             name: memory.name,
             lat: map.location.lat,
             lng: map.location.lng
-        }, function(key){
+        }, "Group", ['cafe', 'cemetery'], function(key){
             $location.path('/group/' + key);
         });
     };
 
     $scope.create = function(){
         //makes sure you have a location
-        map.requestLocation(function(loc){
-            map.createMap();//makes sure the map exists
-            map.addPerson(memory.name, loc.lat, loc.lng, true);
-            map.centerMap();
+        map.requestLocation(function(){
             if(group.ready(createGroup)){
                 createGroup();//if the firebase data is ready/run when ready, create the group
             }

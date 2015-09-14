@@ -16,7 +16,6 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     };
 
     root.$loaded().then(function(){
-        console.log('Model Ready');
         ready = true;
         if(id && id in root){
             group = root[id];
@@ -34,16 +33,17 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         return key;
     };
 
-    self.createGroup = function(creator, success){
+    self.createGroup = function(creator, groupName, selections, success){
         if(!ready) return null;
         var key = generateKey();
         while(key in root) key = generateKey();
         root[key] = {
             timestamp: (new Date()).getTime(),
             members: {},
+            name: groupName || "Group " + key,
             options: {
                 radius: 5,
-                type: 'all'
+                types: {}
             },
             chat: []
         };
@@ -53,8 +53,9 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             online: true,
             creator: true
         };
-        userRef = new Firebase(url + id + '/members/' + creator.name + '/online');
-        userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+        for(var i = 0; i < selections.length; i++){
+            root[key].options.types[selections[i]] = 0;
+        }
         root.$save().then(function(){
             group = root[key];
             self.members = group.members;
@@ -86,8 +87,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         if(id && (id in root)){
             userRef = new Firebase(url + id + '/members/' + person + '/online');
             userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
-            userRef.on('value', function(){
-                userRef.set(true);
+            userRef.on('value', function(val){
+                if(val !== true) userRef.set(true);
             });
             userRef.set(true);
         }else{
@@ -106,12 +107,18 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     };
 
     self.onUpdate = function(listener){
-        root.$watch(function(){
-            group = root[id];
-            self.members = group.members;
-            clearTimeout(delay);
-            delay = setTimeout(listener, 500);
-        });
+        if(group){
+            var groupRef = new Firebase(url + id);
+            var groupWatch = $firebaseObject(groupRef);
+            groupWatch.$watch(function(){
+                if(group){
+                    group = root[id];
+                    self.members = group.members;
+                    clearTimeout(delay);
+                    delay = setTimeout(listener, 500);
+                }
+            });
+        }
     };
 
     $interval(function(){
@@ -120,3 +127,26 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
 
     return self;
 }]);
+
+//Usage:
+//createGroup
+//description: creates a new group object in Firebase with initial arguments
+//creator: {name: "First Last", lat: 123.123, lng: 123.123},
+//groupName: (optional, passing in empty string will generate a group name) "Lunch Group",
+//selections: ['cafe', 'mosque', 'lawyer'] (selections that will be voted on)
+
+//joinGroup
+//description: adds a person to an existing group
+//person: {name: "First Last", lat: 123.123, lng: 123.123}
+
+//online
+//description: sets user state to online and adds a listener for when you disconnect or when other devices disconnect
+//person: "First Last"
+
+//leaveGroup
+//description: deletes a person from the current group
+//person: "First Last"
+
+//onUpdate
+//description: adds a listener to group changes (new members, change in positions, etc.)
+//listener: function(){/*do something because the group changed*/}

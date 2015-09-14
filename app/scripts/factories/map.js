@@ -130,3 +130,16 @@ app.factory('map', ['memory', function(memory){
 
     return self;
 }]);
+
+//Usage:
+//createMap: ensures that map is inserted into DOM. should call requestLocation first so as to center map on self
+
+//centerMap: center the map on a given lat and lng. if no arguments passed, centers on user
+
+//requestLocation: initiates request for location and adds a watcher.  returns position to a callback
+
+//useGroup: should probably only be used how it is currently.  Takes an object of people with positions and centers the map around those online
+
+//addPerson: add a person to the map, used by useGroup and probably should stay that way
+//removePerson: remove a person from the map, used by useGroup and probably should stay that way
+//movePerson: moves a person on the map (probably deprecate in future)
