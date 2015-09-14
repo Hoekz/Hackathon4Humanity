@@ -1,0 +1,15 @@
+<div id="meetings-action-bar" class="layout horizontal center">
+	<i class="mdi mdi-arrow-left" ng-class="{show: isAdding}"></i>
+	<div>Meetings</div>
+	<span class="flex"></span>
+	<i class="mdi mdi-dots-vertical"></i>
+</div>
+<div id="meetings-new-fab" class="noselect shadow-2" ng-click="isAdding = !isAdding">
+	<i class="mdi mdi-plus"></i>
+</div>
+<div class="flex layout vertical scroll">
+	<div style="margin-bottom:2000px"></div>
+</div>
+<div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
+	<div style="margin-bottom:2000px"></div>
+</div>

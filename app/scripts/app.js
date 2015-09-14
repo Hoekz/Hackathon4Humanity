@@ -18,5 +18,9 @@ app.config(["$routeProvider", function($routeProvider){
             controller: 'map',
             templateUrl: 'templates/map.html'
         })
+        .when('/meetings', {
+            controller: 'meetings',
+            templateUrl: 'templates/meetings.html'
+        })
         .otherwise('/');
 }]);

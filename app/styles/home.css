@@ -32,7 +32,7 @@
 #home-view :nth-child(2) {
 	padding:1em;
 }
-#get-started {
+a[href="#/meetings"] {
 	font-family: 'Slabo 27px', serif;
 	font-size:2em;
 	color: #99FF45;
