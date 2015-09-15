@@ -1,2 +1,7 @@
 <h1>Map Page</h1>
 <div>This is where the actual picking of location happens</div>
+<button ng-click="search()">Search</button>
+<div ng-repeat="result in results">
+    <img src="{{result.icon}}" />
+    <span>{{result.name}}</span>
+</div>

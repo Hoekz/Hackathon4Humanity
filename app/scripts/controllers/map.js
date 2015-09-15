@@ -1,5 +1,3 @@
-var search;
-
 app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, group, map, memory){
 
     //display link to be sent to group members
@@ -7,8 +5,13 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
+    $scope.results = [];
 
-    search = map.search;
+    $scope.search = function(){
+        map.search(function(results){
+            $scope.results = results;
+        });
+    };
 
     var setup = function(){
         if(!memory.name || !(memory.name in group.members)) {
