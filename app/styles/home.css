@@ -30,6 +30,13 @@
 	line-height:1;
 	z-index:1;
 }
+#home-header #home-header-icon {
+	position:absolute;
+	top:5vh;
+	left:5vh;
+	height:48px;
+	opacity:.8;
+}
 #home-header > div {
 	position:relative;
 	text-transform:lowercase;
