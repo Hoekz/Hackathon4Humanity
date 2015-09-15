@@ -123,10 +123,8 @@ app.factory('map', ['group', function(group){
 
         var score = function(place){
             var s = 0;
-            for(var type in group.options.types){
-                if(place.types.indexOf(type) != -1){
-                    s += group.options.types[type];
-                }
+            for(var i = 0; i < place.types.length; i++){
+                s += group.options.types[place.types[i]] || 0;
             }
             var d = distance(search.location, place.geometry.location);
             place.score = s * search.radius / (totalVotes * d);
