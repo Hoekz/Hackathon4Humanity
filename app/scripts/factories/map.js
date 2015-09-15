@@ -1,8 +1,20 @@
-app.factory('map', ['memory', function(memory){
+app.factory('map', ['group', function(group){
     var self = this;
     self.map = null;
     self.useCurrent = true;
     var people = {};
+
+    var rad = function(x){return x * Math.PI / 180;};
+    var distance = function(p1, p2){
+        var R = 6378137; // Earth’s mean radius in meter
+        var dLat = rad(p2.lat() - p1.lat());
+        var dLong = rad(p2.lng() - p1.lng());
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
 
     var canvas = document.createElement('canvas');
     canvas.width = 32;
@@ -78,19 +90,20 @@ app.factory('map', ['memory', function(memory){
         }
     };
 
-    self.useGroup = function(group){
-        for(var person in group){
-            if(group[person].online === true){
+    var updatePeople = function(){
+        var members = group.members;
+        for(var person in members){
+            if(members[person].online === true){
                 if ((person in people)) {
-                    people[person].setPosition({lat: group[person].lat, lng: group[person].lng});
+                    people[person].setPosition({lat: members[person].lat, lng: members[person].lng});
                 } else {
-                    self.addPerson(person, group[person].lat, group[person].lng);
+                    self.addPerson(person, members[person].lat, members[person].lng);
                 }
             }
         }
         var bounds = new google.maps.LatLngBounds();
         for(var person in people){
-            if(!(person in group) || group[person].online !== true){
+            if(!(person in members) || members[person].online !== true){
                 self.removePerson(person);
             }else{
                 bounds.extend(people[person].getPosition());
@@ -98,6 +111,52 @@ app.factory('map', ['memory', function(memory){
         }
         self.map.setCenter(bounds.getCenter());
         self.map.fitBounds(bounds);
+    };
+
+    self.search = function(callback){
+        var totalVotes = 0;
+
+        var tempMap = new google.maps.Map(document.createElement('div'), {
+            location: self.location,
+            zoom: 18
+        });
+
+        var score = function(place){
+            var s = 0;
+            for(var i = 0; i < place.types.length; i++){
+                s += group.options.types[place.types[i]] || 0;
+            }
+            var d = distance(search.location, place.geometry.location);
+            place.score = s * search.radius / (totalVotes * d);
+        };
+
+        var bounds = new google.maps.LatLngBounds();
+        for(var person in group.members){
+            var peep = group.members[person];
+            if(peep && !peep.ignore){
+                bounds.extend(new google.maps.LatLng(peep.lat, peep.lng));
+            }
+        }
+        var search = {
+            location: bounds.getCenter(),
+            radius: 1619 * group.options.radius || 1619,
+            types: []
+        };
+        for(var type in group.options.types){
+            search.types.push(type);
+            totalVotes += group.options.types[type];
+        }
+        search.types.sort(function(a, b){return group.options.types[a] < group.options.types[b];});
+        search.types.splice(3, search.types.length);
+
+        var service = new google.maps.places.PlacesService(tempMap);
+
+        service.nearbySearch(search, function(results){
+            for(var i = 0; i < results.length; i++) score(results[i]);
+            results.sort(function(a, b){return b.score - a.score;});
+            results.splice(5, results.length);
+            callback(results);
+        });
     };
 
     self.addPerson = function(key, lat, lng){
@@ -128,6 +187,10 @@ app.factory('map', ['memory', function(memory){
         }
     };
 
+    self.listen = function(){
+        group.onUpdate(updatePeople);
+    };
+
     return self;
 }]);
 
@@ -138,7 +201,7 @@ app.factory('map', ['memory', function(memory){
 
 //requestLocation: initiates request for location and adds a watcher.  returns position to a callback
 
-//useGroup: should probably only be used how it is currently.  Takes an object of people with positions and centers the map around those online
+//listen: activate group listening
 
 //addPerson: add a person to the map, used by useGroup and probably should stay that way
 //removePerson: remove a person from the map, used by useGroup and probably should stay that way
