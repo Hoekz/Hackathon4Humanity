@@ -71,7 +71,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             group.members[person.name] = {
                 lat: person.lat,
                 lng: person.lng,
-                creator: group.members[person.name] ? group.members[person.name].creator : false
+                creator: group.members[person.name] ? group.members[person.name].creator : false,
+                online: true
             };
             root.$save().then(function(){
                 if(success) success();
@@ -107,13 +108,15 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     };
 
     self.onUpdate = function(listener){
-        if(group){
+        id = $routeParams.id || null;
+        if(id){
             var groupRef = new Firebase(url + id);
             var groupWatch = $firebaseObject(groupRef);
             groupWatch.$watch(function(){
                 if(group){
                     group = root[id];
                     self.members = group.members;
+                    self.options = group.options;
                     clearTimeout(delay);
                     delay = setTimeout(listener, 500);
                 }

@@ -1,4 +1,4 @@
-app.factory('map', ['memory', function(memory){
+app.factory('map', ['group', function(group){
     var self = this;
     self.map = null;
     self.useCurrent = true;
@@ -78,19 +78,21 @@ app.factory('map', ['memory', function(memory){
         }
     };
 
-    self.useGroup = function(group){
-        for(var person in group){
-            if(group[person].online === true){
+    var updatePeople = function(){
+        var members = group.members;
+        console.log(members);
+        for(var person in members){
+            if(members[person].online === true){
                 if ((person in people)) {
-                    people[person].setPosition({lat: group[person].lat, lng: group[person].lng});
+                    people[person].setPosition({lat: members[person].lat, lng: members[person].lng});
                 } else {
-                    self.addPerson(person, group[person].lat, group[person].lng);
+                    self.addPerson(person, members[person].lat, members[person].lng);
                 }
             }
         }
         var bounds = new google.maps.LatLngBounds();
         for(var person in people){
-            if(!(person in group) || group[person].online !== true){
+            if(!(person in members) || members[person].online !== true){
                 self.removePerson(person);
             }else{
                 bounds.extend(people[person].getPosition());
@@ -98,6 +100,30 @@ app.factory('map', ['memory', function(memory){
         }
         self.map.setCenter(bounds.getCenter());
         self.map.fitBounds(bounds);
+    };
+
+    self.search = function(callback){
+        //for example of what to do with callback: https://developers.google.com/maps/documentation/javascript/examples/place-search
+        var bounds = new google.maps.LatLngBounds();
+        for(var person in group.members){
+            var peep = group.members[person];
+            if(!peep.ignore){
+                bounds.extend(google.maps.LatLng(peep.lat, peep.lng));
+            }
+        }
+        var search = {
+            location: bounds.getCenter(),
+            radius: 1619 * group.options.radius || 1619,
+            types: []
+        };
+
+        for(var type in group.options.type) search.types.push(type);
+        search.types.sort(function(a, b){return group.options.type[a] > group.options.type[b];});
+        search.types.splice(3, search.types.length);
+
+        var service = new google.maps.places.PlacesService(map);
+
+        service.nearbySearch(search, callback);
     };
 
     self.addPerson = function(key, lat, lng){
@@ -128,6 +154,10 @@ app.factory('map', ['memory', function(memory){
         }
     };
 
+    self.listen = function(){
+        group.onUpdate(updatePeople);
+    };
+
     return self;
 }]);
 
@@ -138,7 +168,7 @@ app.factory('map', ['memory', function(memory){
 
 //requestLocation: initiates request for location and adds a watcher.  returns position to a callback
 
-//useGroup: should probably only be used how it is currently.  Takes an object of people with positions and centers the map around those online
+//listen: activate group listening
 
 //addPerson: add a person to the map, used by useGroup and probably should stay that way
 //removePerson: remove a person from the map, used by useGroup and probably should stay that way
