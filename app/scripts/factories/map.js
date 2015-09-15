@@ -4,6 +4,18 @@ app.factory('map', ['group', function(group){
     self.useCurrent = true;
     var people = {};
 
+    var rad = function(x){return x * Math.PI / 180;};
+    var distance = function(p1, p2){
+        var R = 6378137; // Earth’s mean radius in meter
+        var dLat = rad(p2.lat() - p1.lat());
+        var dLong = rad(p2.lng() - p1.lng());
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
+
     var canvas = document.createElement('canvas');
     canvas.width = 32;
     canvas.height = 48;
@@ -80,7 +92,6 @@ app.factory('map', ['group', function(group){
 
     var updatePeople = function(){
         var members = group.members;
-        console.log(members);
         for(var person in members){
             if(members[person].online === true){
                 if ((person in people)) {
@@ -103,12 +114,29 @@ app.factory('map', ['group', function(group){
     };
 
     self.search = function(callback){
-        //for example of what to do with callback: https://developers.google.com/maps/documentation/javascript/examples/place-search
+        var totalVotes = 0;
+
+        var tempMap = new google.maps.Map(document.createElement('div'), {
+            location: self.location,
+            zoom: 18
+        });
+
+        var score = function(place){
+            var s = 0;
+            for(var type in group.options.types){
+                if(place.types.indexOf(type) != -1){
+                    s += group.options.types[type];
+                }
+            }
+            var d = distance(search.location, place.geometry.location);
+            place.score = s * search.radius / (totalVotes * d);
+        };
+
         var bounds = new google.maps.LatLngBounds();
         for(var person in group.members){
             var peep = group.members[person];
-            if(!peep.ignore){
-                bounds.extend(google.maps.LatLng(peep.lat, peep.lng));
+            if(peep && !peep.ignore){
+                bounds.extend(new google.maps.LatLng(peep.lat, peep.lng));
             }
         }
         var search = {
@@ -116,14 +144,21 @@ app.factory('map', ['group', function(group){
             radius: 1619 * group.options.radius || 1619,
             types: []
         };
-
-        for(var type in group.options.type) search.types.push(type);
-        search.types.sort(function(a, b){return group.options.type[a] > group.options.type[b];});
+        for(var type in group.options.types){
+            search.types.push(type);
+            totalVotes += group.options.types[type];
+        }
+        search.types.sort(function(a, b){return group.options.types[a] < group.options.types[b];});
         search.types.splice(3, search.types.length);
 
-        var service = new google.maps.places.PlacesService(map);
+        var service = new google.maps.places.PlacesService(tempMap);
 
-        service.nearbySearch(search, callback);
+        service.nearbySearch(search, function(results){
+            for(var i = 0; i < results.length; i++) score(results[i]);
+            results.sort(function(a, b){return b.score - a.score;});
+            results.splice(5, results.length);
+            callback(results);
+        });
     };
 
     self.addPerson = function(key, lat, lng){
