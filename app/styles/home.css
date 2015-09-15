@@ -1,51 +1,61 @@
 .half-vh {
 	height:50vh;
-}
-.half-vh:first-child {
-	background:#333;
-	font-family:'Montserrat';
-	font-weight:400;
-	font-size: 10vh;
-}
-.half-vh:last-child {
-	background:#333;
+	min-height:50vh;
 }
 #home-view {
 	position:relative;
 }
 #home-header {
-	max-width:480px;
-	margin:10vh auto;
-	height:30vh;
+	position:relative;
 	text-align:center;
+	overflow:hidden;
+	background:#03c3e2;
+	color:#98E6F3;
+	text-shadow:0px 1px 2px rgba(0,0,0,.3), -1px 1px 0px rgba(0,0,0,.3);
 }
-#home-header :nth-child(1) {
-	text-transform:uppercase;
+#home-header #home-header-bg {
+	position:absolute;
+	top:0;
+	right:-30%;
+	height:100%;
+	width:80%;
+	background-image: url(http://www.offthegridnews.com/wp-content/uploads/2015/02/Google-maps-techmeupDOTnet.jpg);
+	background-color:#333;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: top left;
+	background-size:100%;
+	clip-path: circle(35vw at center);
+	filter: grayscale(100%) contrast(100%) opacity(17.5%);
+	line-height:1;
+	z-index:1;
 }
-#home-header :nth-child(2) {
-	font-size:1.5rem;
-	font-weight:700;
-}
-#home-header :nth-child(3) {
-	text-transform:uppercase;
-}
-#home-view :nth-child(2) {
-	padding:1em;
-}
-a[href="#/meetings"] {
-	font-family: 'Slabo 27px', serif;
-	font-size:2em;
-	color: #99FF45;
-	text-shadow: 0 2px 0 black, 1px 1px 0 black;
-	position:fixed;
-	bottom:1rem;
-	left:1rem;
-	right:1rem;
-	background:#333;
-	text-align:center;
-	padding:1rem .5rem;
-	border-radius:3px;
-	border:1px solid black;
-	box-shadow:0 0 .25em 0 rgba(100, 100, 100, .8) inset;
+#home-header > div {
+	position:relative;
 	text-transform:lowercase;
+	margin:auto;
+	font-size:12vh;
+	z-index:2;
+}
+#home-header > div > div:nth-child(2) {
+	font-size:4vh;
+	text-align:right;
+	text-shadow:none;
+}
+#gettingStarted {
+	position:absolute;
+	top:50vh;
+	right:1rem;
+}
+a[href="#/meetings"]  {
+	position:relative;
+	top:-.75em;
+	padding:1rem 1rem;
+	background:#FCC04F;
+	border-radius:3px;
+	text-transform:lowercase;
+	font-size:2em;
+	color: #F2F5F7;
+	z-index:5;
+	text-shadow:-1px 1px 0px rgba(0, 0, 0, .4);
 }

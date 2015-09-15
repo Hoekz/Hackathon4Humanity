@@ -1,9 +1,11 @@
 #meetings-action-bar {
 	height:4rem;
 	min-height:4rem;
-	background:#00FF00;
+	background:#F97B66;
 	padding:1rem;
 	font-size:1.5em;
+	color:rgba(255,255,255, 1);
+	z-index:2;
 }
 #meetings-action-bar > div{
 	margin-left:.75rem;
@@ -42,7 +44,7 @@
 	padding:1rem;
 	border-radius:50%;
 	font-size:2rem;
-	background:#99FF45;
+	background:#03c3e2;
 	cursor:pointer;
 }
 #meetings-send-fab {
@@ -52,7 +54,7 @@
 	padding:1rem;
 	border-radius:50%;
 	font-size:2rem;
-	background:#99FF45;
+	background:#03c3e2;
 	cursor:pointer;
 	-webkit-transform:rotate(180deg);
 	transform:rotate(180deg);
@@ -64,7 +66,7 @@
 	width:100%;
 	padding:2rem;
 	padding-top:42vh;
-	background:cyan;
+	background:#333;
 	-webkit-transform:translate3d(100%, 0, 0);
 	transform:translate3d(100%, 0, 0);
 	transition:.5s;
@@ -80,5 +82,5 @@
 	right:0;
 	height:40vh;
 	padding:2rem;
-	background:#333;
+	background:#FCC04F;
 }
