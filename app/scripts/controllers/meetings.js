@@ -1,5 +1,8 @@
 app.controller('meetings', ["$scope", 'memory', function($scope, memory){
-
+	if(!memory.groups){
+		memory.groups = [];
+	}
+	$scope.groups = memory.groups;
 	$scope.isAdding = false;
 	$scope.title = "Meetings";
 	$scope.newMeetingName = "";

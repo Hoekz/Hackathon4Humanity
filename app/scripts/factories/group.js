@@ -124,6 +124,14 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         }
     };
 
+    self.id = function(){
+        return id;
+    };
+
+    self.name = function(){
+        return group ? group.name : null;
+    };
+
     $interval(function(){
         id = $routeParams.id || null;
     }, 50);

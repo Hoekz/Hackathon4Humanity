@@ -23,6 +23,13 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
             lng: map.location.lng
         }, function(){
             group.online(memory.name);
+            if(!memory.groups){
+                memory.groups = [];
+            }
+            memory.groups.push({
+                id: group.id(),
+                name: group.name()
+            });
         });
         map.listen();
     };
