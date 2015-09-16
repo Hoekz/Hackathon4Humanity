@@ -1,7 +1,7 @@
-app.factory('map', ['group', function(group){
+app.factory('map', ['group', 'memory', function(group, memory){
     var self = this;
     self.map = null;
-    self.useCurrent = true;
+    var useCurrent = memory.useCurrent = memory.useCurrent || true;
     var people = {};
 
     var rad = function(x){return x * Math.PI / 180;};
@@ -76,7 +76,7 @@ app.factory('map', ['group', function(group){
                 };
                 callback(self.location);
                 navigator.geolocation.watchPosition(function(loc){
-                    if(self.useCurrent){
+                    if(useCurrent){
                         self.location.lat = loc.coords.latitude;
                         self.location.lng = loc.coords.longitude;
                     }
@@ -93,7 +93,7 @@ app.factory('map', ['group', function(group){
     var updatePeople = function(){
         var members = group.members;
         for(var person in members){
-            if(members[person].online === true){
+            if(!members[person].ignore){
                 if ((person in people)) {
                     people[person].setPosition({lat: members[person].lat, lng: members[person].lng});
                 } else {
@@ -103,7 +103,7 @@ app.factory('map', ['group', function(group){
         }
         var bounds = new google.maps.LatLngBounds();
         for(var person in people){
-            if(!(person in members) || members[person].online !== true){
+            if(!(person in members) || members[person].ignore){
                 self.removePerson(person);
             }else{
                 bounds.extend(people[person].getPosition());
@@ -173,6 +173,12 @@ app.factory('map', ['group', function(group){
                 animation: google.maps.Animation.DROP
             });
             people[key].setIcon(generateImageUrl(key));
+            google.maps.event.addListener(people[key], 'dragend', function(){
+                if(!useCurrent){
+                    group.members[key].lat = people[key].getPosition().lat();
+                    group.members[key].lng = people[key].getPosition().lng();
+                }
+            });
         }
     };
 
@@ -181,9 +187,11 @@ app.factory('map', ['group', function(group){
         delete people[key];
     };
 
-    self.movePerson = function(key, lat, lng){
-        if(key in people){
-            people[key].setPosition({lat: lat, lng: lng});
+    self.toggleLocationMode = function(){
+        if(memory.name) {
+            useCurrent = !useCurrent;
+            memory.useCurrent = useCurrent;
+            people[memory.name].setDraggable(!people[memory.name].getDraggable());
         }
     };
 

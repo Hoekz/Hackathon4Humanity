@@ -7,6 +7,16 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     //for after location chosen, either show directions on map, or offer to open directions in app/google
     $scope.results = [];
 
+    $scope.toggleLocationMode = map.toggleLocationMode;
+
+    $scope.toggleIgnore = function(name){
+        if(group.members[memory.name].creator && name){
+            group.toggleIgnore(name);
+        }else{
+            group.toggleIgnore(memory.name);
+        }
+    };
+
     $scope.search = function(){
         map.search(function(results){
             $scope.results = results;

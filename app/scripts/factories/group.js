@@ -97,6 +97,10 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         }
     };
 
+    self.toggleIgnore = function(person){
+        group[person].ignore = !group[person].ignore;
+    };
+
     self.leaveGroup = function(person, success){
         if(!ready) return null;
         if(group){
