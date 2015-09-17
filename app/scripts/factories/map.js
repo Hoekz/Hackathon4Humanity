@@ -3,6 +3,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
     self.map = null;
     var useCurrent = memory.useCurrent = memory.useCurrent || true;
     var people = {};
+    var loc = null;
 
     var rad = function(x){return x * Math.PI / 180;};
     var distance = function(p1, p2){
@@ -68,7 +69,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
     };
 
     self.requestLocation = function(callback){
-        if(!self.location && self.useCurrent){
+        if(!self.location && useCurrent){
             navigator.geolocation.getCurrentPosition(function(loc){
                 self.location = {
                     lat: loc.coords.latitude,
@@ -180,6 +181,27 @@ app.factory('map', ['group', 'memory', function(group, memory){
                 }
             });
         }
+    };
+
+    self.setLocation = function(location){
+        loc = new google.maps.Marker({
+            title: location.name,
+            position: location.geometry.location,
+            map: self.map
+        });
+
+        google.maps.event.addListener(loc, 'click', function(){
+            var url = 'https://www.google.com/maps/dir/';
+            var userLocation = {
+                lat: group.members[memory.name].lat,
+                lng: group.members[memory.name].lng
+            };
+            url += userLocation.lat + ',' + userLocation.lng;
+            console.log(location);
+            url += '/' + location.name.replace(/ /g, '+');
+            console.log(url);
+            window.open(url);
+        });
     };
 
     self.removePerson = function(key){

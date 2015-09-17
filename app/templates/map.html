@@ -1,7 +1,39 @@
-<h1>Map Page</h1>
-<div>This is where the actual picking of location happens</div>
-<button ng-click="search()">Search</button>
-<div ng-repeat="result in results">
-    <img src="{{result.icon}}" />
-    <span>{{result.name}}</span>
+<div id="maps-action-bar" class="layout horizontal center shadow-1">
+	<div ng-click="mode='map'" class="flex">
+		<i class="mdi mdi-earth" ng-class="{mode: mode=='map'}"></i>
+	</div>
+	<div ng-click="mode='settings'" class="flex">
+		<i class="mdi mdi-settings" ng-class="{mode: mode=='settings'}"></i>
+	</div>
+	<div ng-click="mode='chat'" class="flex">
+		<i class="mdi mdi-message" ng-class="{mode: mode=='chat'}"></i>
+	</div>
+	<div ng-click="mode='results'" ng-show='isCreator' class="flex">
+		<i class="mdi mdi-magnify" ng-class="{mode: mode=='results'}"></i>
+	</div>
+</div>
+<div id="map" ng-show="mode=='map'">
+    <div id="map-view"></div>
+</div>
+<div ng-show="mode=='settings'">
+	<div ng-click="showGroup=!showGroup">
+		<div ng-hide="showGroup">Show Members</div>
+		<div ng-show="showGroup">
+			<div>Hide Members</div>
+			<div ng-repeat="member in members">{{member.name}}</div>
+		</div>
+	</div>
+	<div ng-show="isCreator">
+
+	</div>
+</div>
+<div ng-show="mode=='results'">
+	<button ng-click="search()">Search</button>
+	<div ng-repeat="result in results" ng-click="showResult(result)">
+    	<img src="{{result.icon}}" />
+    	<span>{{result.name}}</span>
+	</div>
+</div>
+<div ng-show="mode=='chat'">
+	<!--chat here-->
 </div>

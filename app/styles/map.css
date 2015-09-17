@@ -1,0 +1,26 @@
+#maps-action-bar div{
+    background: none;
+    text-align: center;
+    border: none;
+    margin: 0;
+}
+
+#maps-action-bar .mode{
+    background: rgba(0, 0, 0, .2);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+#map {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+#map-view {
+    width: 100%;
+    height: 100%;
+}

@@ -1,11 +1,19 @@
 app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, group, map, memory){
-
     //display link to be sent to group members
     //have menu to access settings (voting, distance, boolean to factor in location)
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
     $scope.results = [];
+    if(!memory.groups){
+        memory.groups = {};
+    }
+    if(memory.groups[group.id()]){
+        $scope.isCreator = memory.groups[group.id()].creator;
+    }else{
+        $scope.isCreator = false;
+    }
+    $scope.mode = 'map';
 
     $scope.toggleLocationMode = map.toggleLocationMode;
 
@@ -36,10 +44,12 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
             if(!memory.groups){
                 memory.groups = [];
             }
-            memory.groups.push({
-                id: group.id(),
-                name: group.name()
-            });
+            memory.groups[group.id()] = {
+                name: group.name(),
+                creator: group.members[memory.name].creator
+            };
+            $scope.updateList();
+            $scope.isCreator = group.members[memory.name].creator;
         });
         map.listen();
     };
@@ -50,4 +60,18 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
             setup();
         }
     });
+
+    $scope.showGroup = false;
+    $scope.members = [];
+
+    $scope.updateList = function(){
+        $scope.members = [];
+        for(var person in group.members){
+            $scope.members.push({name: person});
+        }
+    };
+
+    $scope.showResult = map.setLocation;
+
+    group.onUpdate($scope.updateList);
 }]);
