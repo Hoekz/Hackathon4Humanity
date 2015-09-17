@@ -67,7 +67,10 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     $scope.updateList = function(){
         $scope.members = [];
         for(var person in group.members){
-            $scope.members.push({name: person});
+            $scope.members.push({
+                name: person,
+                online: group.members[person].online
+            });
         }
     };
 

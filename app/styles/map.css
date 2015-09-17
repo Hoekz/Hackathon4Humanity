@@ -24,3 +24,21 @@
     width: 100%;
     height: 100%;
 }
+
+.member {
+    background: #eee;
+    padding: .5rem;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    color: #21293A;
+    font-size: 2rem;
+}
+
+.online {
+    float: left;
+    background: #2ea53c;
+    border-radius: 0.4rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    margin: 0.75rem;
+}

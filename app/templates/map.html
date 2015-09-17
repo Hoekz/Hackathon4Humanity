@@ -17,10 +17,12 @@
 </div>
 <div ng-show="mode=='settings'">
 	<div ng-click="showGroup=!showGroup">
-		<div ng-hide="showGroup">Show Members</div>
+		<div ng-hide="showGroup" class="member toggle">Show Members</div>
 		<div ng-show="showGroup">
-			<div>Hide Members</div>
-			<div ng-repeat="member in members">{{member.name}}</div>
+			<div class="member toggle">Hide Members</div>
+			<div ng-repeat="member in members" class="member">
+				<div ng-show="member.online===true" class="online"></div>{{member.name}}
+			</div>
 		</div>
 	</div>
 	<div ng-show="isCreator">

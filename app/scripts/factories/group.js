@@ -7,7 +7,6 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     var group = null;
     var userRef = null;
     var ready = false;
-    var delay = 0;
     var onReady = function(){};
 
     self.ready = function(listener){
@@ -114,11 +113,12 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     self.onUpdate = function(listener){
         id = $routeParams.id || null;
         if(id){
+            var delay = 0;
             var groupRef = new Firebase(url + id);
             var groupWatch = $firebaseObject(groupRef);
             groupWatch.$watch(function(){
                 if(group){
-                    group = root[id];
+                    group = groupWatch;
                     self.members = group.members;
                     self.options = group.options;
                     clearTimeout(delay);
