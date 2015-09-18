@@ -1,6 +1,6 @@
 .half-vh {
-	height:50vh;
-	min-height:50vh;
+	height:60vh;
+	min-height:60vh;
 }
 #home-view {
 	position:relative;
@@ -45,14 +45,20 @@
 #home-header > div > div:nth-child(2) {
 	font-size:4vh;
 	text-align:right;
-	text-shadow:none;
 }
 #gettingStarted {
 	position:absolute;
-	top:50vh;
+	top:60vh;
 	right:1rem;
 }
-a[href="#/meetings"]  {
+#about, #about-start {
+	position:absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+a[href="#/meetings"],  a[href="#/about"]{
 	position:relative;
 	top:-.75em;
 	padding:1rem 1rem;
@@ -63,4 +69,9 @@ a[href="#/meetings"]  {
 	color: #F2F5F7;
 	z-index:5;
 	text-shadow:-1px 1px 0px rgba(0, 0, 0, .4);
+}
+.info{
+	width: 94%;
+	padding: 3%;
+	text-align: center;
 }

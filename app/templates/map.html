@@ -5,8 +5,8 @@
 	<div ng-click="mode='settings'" class="flex">
 		<i class="mdi mdi-settings" ng-class="{mode: mode=='settings'}"></i>
 	</div>
-	<div ng-click="mode='chat'" class="flex">
-		<i class="mdi mdi-message" ng-class="{mode: mode=='chat'}"></i>
+	<div ng-click="mode='share'" class="flex">
+		<i class="mdi mdi-share-variant" ng-class="{mode: mode=='share'}"></i>
 	</div>
 	<div ng-click="mode='results'" ng-show='isCreator' class="flex">
 		<i class="mdi mdi-magnify" ng-class="{mode: mode=='results'}"></i>
@@ -25,6 +25,14 @@
 			</div>
 		</div>
 	</div>
+	<div>Search Radius: {{options.radius + (options.radius==1) ? 'mile' : 'miles'}}</div>
+	<input type="range" max="10" min="1" ng-model="options.radius">
+	<div>
+		<label ng-repeat="type in options.types">
+			<input type="checkbox" ng-model="type.value">
+			{{type.name}}
+		</label>
+	</div>
 	<div ng-show="isCreator">
 
 	</div>
@@ -36,6 +44,7 @@
     	<span>{{result.name}}</span>
 	</div>
 </div>
-<div ng-show="mode=='chat'">
-	<!--chat here-->
+<div ng-show="mode=='share'">
+	<div>Copy this link and share it with your group</div>
+	<div>{{link}}</div>
 </div>

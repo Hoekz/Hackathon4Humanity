@@ -4,6 +4,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
+    $scope.link = location.href;
     $scope.results = [];
     if(!memory.groups){
         memory.groups = {};
@@ -13,7 +14,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     }else{
         $scope.isCreator = false;
     }
-    $scope.mode = 'map';
+    $scope.mode = memory.groupSubPage || 'map';
 
     $scope.toggleLocationMode = map.toggleLocationMode;
 
@@ -65,6 +66,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     $scope.members = [];
 
     $scope.updateList = function(){
+        memory.groupSubPage = $scope.mode;
         $scope.members = [];
         for(var person in group.members){
             $scope.members.push({
@@ -72,6 +74,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
                 online: group.members[person].online
             });
         }
+        $scope.options = group.options;
     };
 
     $scope.showResult = map.setLocation;
