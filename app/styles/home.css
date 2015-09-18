@@ -19,12 +19,10 @@
 	right:-30%;
 	height:100%;
 	width:80%;
-	background-image: url(http://www.offthegridnews.com/wp-content/uploads/2015/02/Google-maps-techmeupDOTnet.jpg);
+	background-image: url(https://c2.staticflickr.com/8/7450/13623035505_3dd1cc33e4_b.jpg);
 	background-color:#333;
 	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: top left;
-	background-size:100%;
+	background-position: bottom left;
 	clip-path: circle(35vw at center);
 	filter: grayscale(100%) contrast(100%) opacity(17.5%);
 	line-height:1;
@@ -34,7 +32,7 @@
 	position:absolute;
 	top:5vh;
 	left:5vh;
-	height:48px;
+	height:50%;
 	opacity:.8;
 }
 #home-header > div {
