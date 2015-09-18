@@ -22,10 +22,8 @@
 	<h3>Name this meeting</h3>
 	<input type="text" ng-model="newMeetingName">
 	<h3>Select your approved meeting locations</h3>
-	<label ng-repeat="location in locationTypes"> 
+	<label ng-repeat="location in locationTypes" title="{{location.googleId}}">
 		<input type="checkbox" ng-model="location.approved">
 		{{location.name}}
 	</label>
-	<span>{{newMeetingName}}</span>
-	<span>{{locationTypes}}</span>
 </div>
