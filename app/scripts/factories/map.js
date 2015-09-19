@@ -187,8 +187,11 @@ app.factory('map', ['group', 'memory', function(group, memory){
         loc = new google.maps.Marker({
             title: location.name,
             position: location.geometry.location,
-            map: self.map
+            map: self.map,
+            icon: 'images/location.png'
         });
+
+        self.map.setCenter(loc.getPosition());
 
         google.maps.event.addListener(loc, 'click', function(){
             var url = 'https://www.google.com/maps/dir/';
@@ -197,9 +200,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
                 lng: group.members[memory.name].lng
             };
             url += userLocation.lat + ',' + userLocation.lng;
-            console.log(location);
             url += '/' + location.name.replace(/ /g, '+');
-            console.log(url);
             window.open(url);
         });
     };

@@ -98,7 +98,10 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
         memory.groups[group.id()].votes[type] = $scope.types[i].value;
     };
 
-    $scope.showResult = map.setLocation;
+    $scope.showResult = function(result){
+        $scope.mode = 'map';
+        map.setLocation(result);
+    };
 
     group.onUpdate($scope.updateList);
 }]);
