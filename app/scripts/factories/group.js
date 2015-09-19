@@ -53,7 +53,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             creator: true
         };
         for(var i = 0; i < selections.length; i++){
-            root[key].options.types[selections[i]] = 0;
+            root[key].options.types[selections[i]] = 1;
         }
         root.$save().then(function(){
             group = root[key];
@@ -61,6 +61,13 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             if(success) success(key);
         });
         return key;
+    };
+
+    self.updateVotes = function(type, state){
+        root[id].options.types[type] += state ? 1 : -1;
+        root.$save().then(function(){
+
+        });
     };
 
     self.joinGroup = function(person, success){
@@ -88,7 +95,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             userRef = new Firebase(url + id + '/members/' + person + '/online');
             userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
             userRef.on('value', function(val){
-                if(val !== true) userRef.set(true);
+                if(val !== true && id) userRef.set(true);
             });
             userRef.set(true);
         }else{

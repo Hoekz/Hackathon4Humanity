@@ -50,12 +50,22 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 			types = types.concat(subtypes);
 		}
 		for(var i = 0; i < types.length; i++) types[i] = types[i].toLowerCase().replace(/ /g, '_');
-		console.log(types);
 		group.createGroup({
 			name: memory.name,
 			lat: map.location.lat,
 			lng: map.location.lng
-		}, $scope.newMeetingName || "Group", types, function(key){
+		}, $scope.newMeetingName, types, function(key){
+			if(!memory.groups){
+				memory.groups = {};
+			}
+			memory.groups[key] = {
+				name: $scope.newMeetingName || "Group " + key,
+				creator: true,
+				votes: {}
+			};
+			for(var i = 0; i < types.length; i++){
+                memory.groups[key].votes[types[i]] = true;
+            }
 			memory.groupSubPage = 'share';
 			$location.path('/group/' + key);
 		});

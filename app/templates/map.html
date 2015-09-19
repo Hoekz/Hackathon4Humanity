@@ -27,11 +27,8 @@
 	</div>
 	<div>Search Radius: {{options.radius + (options.radius==1) ? 'mile' : 'miles'}}</div>
 	<input type="range" max="10" min="1" ng-model="options.radius">
-	<div>
-		<label ng-repeat="type in options.types">
-			<input type="checkbox" ng-model="type.value">
-			{{type.name}}
-		</label>
+	<div ng-repeat="type in types" class="checkbox-parent" ng-click="toggleVote($index, type.type)">
+		<div class="checkbox" ng-class="{checked: type.value}"></div>{{type.name}}
 	</div>
 	<div ng-show="isCreator">
 

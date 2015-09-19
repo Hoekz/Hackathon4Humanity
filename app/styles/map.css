@@ -42,3 +42,21 @@
     height: 0.6rem;
     margin: 0.75rem;
 }
+
+.checkbox-parent{
+    padding: 5px;
+}
+
+.checkbox{
+    margin: 0 8px;
+    float: left;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    border: 2px solid white;
+    background: transparent;
+}
+
+.checkbox.checked{
+    background: white;
+}

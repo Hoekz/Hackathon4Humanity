@@ -43,12 +43,19 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
         }, function(){
             group.online(memory.name);
             if(!memory.groups){
-                memory.groups = [];
+                memory.groups = {};
             }
             memory.groups[group.id()] = {
                 name: group.name(),
-                creator: group.members[memory.name].creator
+                creator: group.members[memory.name].creator,
+                votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}
             };
+            for(var type in group.options.types){
+                if(!(type in memory.groups[group.id()].votes)){
+                    group.options.types[type]++;
+                    memory.groups[group.id()].votes[type] = true;
+                }
+            }
             $scope.updateList();
             $scope.isCreator = group.members[memory.name].creator;
         });
@@ -75,9 +82,25 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
             });
         }
         $scope.options = group.options;
+        $scope.types = [];
+        for(var type in $scope.options.types){
+            $scope.types.push({
+                name: capIt(type.replace(/_/g, " ")),
+                type: type,
+                value: memory.groups[group.id()].votes[type]
+            });
+        }
+    };
+
+    $scope.toggleVote = function(i, type){
+        $scope.types[i].value = !$scope.types[i].value;
+        group.updateVotes(type, $scope.types[i].value);
+        memory.groups[group.id()].votes[type] = $scope.types[i].value;
     };
 
     $scope.showResult = map.setLocation;
 
     group.onUpdate($scope.updateList);
 }]);
+
+function capIt(str){return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});}
