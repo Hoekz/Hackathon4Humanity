@@ -81,9 +81,9 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
                 online: group.members[person].online
             });
         }
-        $scope.options = group.options;
+        $scope.radius = group.options.radius;
         $scope.types = [];
-        for(var type in $scope.options.types){
+        for(var type in group.options.types){
             $scope.types.push({
                 name: capIt(type.replace(/_/g, " ")),
                 type: type,

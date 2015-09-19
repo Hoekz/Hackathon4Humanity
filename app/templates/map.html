@@ -12,7 +12,8 @@
 		<i class="mdi mdi-magnify" ng-class="{mode: mode=='results'}"></i>
 	</div>
 </div>
-<div id="map" ng-show="mode=='map'">
+<div id="map">
+	<div id="map-cover" ng-hide="mode=='map'"></div>
     <div id="map-view"></div>
 </div>
 <div ng-show="mode=='settings'">
@@ -25,8 +26,8 @@
 			</div>
 		</div>
 	</div>
-	<div>Search Radius: {{options.radius + (options.radius==1) ? 'mile' : 'miles'}}</div>
-	<input type="range" max="10" min="1" ng-model="options.radius">
+	<div>Search Radius: {{radius + ((radius==1) ? ' mile' : ' miles')}}</div>
+	<input type="range" max="10" min="1" ng-model="radius">
 	<div ng-repeat="type in types" class="checkbox-parent" ng-click="toggleVote($index, type.type)">
 		<div class="checkbox" ng-class="{checked: type.value}"></div>{{type.name}}
 	</div>

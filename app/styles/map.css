@@ -11,13 +11,18 @@
     padding: 8px;
 }
 
-#map {
+#map, #map-cover {
     position: fixed;
     top: 4rem;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: -1;
+}
+
+#map-cover{
+    z-index: 1;
+    background:#21293a;
 }
 
 #map-view {
@@ -59,4 +64,9 @@
 
 .checkbox.checked{
     background: white;
+}
+
+input[type='range']{
+    width: 90%;
+    margin: 1% 5%;
 }
