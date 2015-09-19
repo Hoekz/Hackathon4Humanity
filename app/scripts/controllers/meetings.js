@@ -18,7 +18,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 		$scope.isAdding = !$scope.isAdding;
 		resetAddPage();
 		if($scope.isAdding) {
-			$scope.title = "Create New Meeting";
+			$scope.title = "New";
 		}
 		else {
 			$scope.title = "Meetings";

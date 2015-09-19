@@ -4,7 +4,7 @@ Dark Blue - #01B3D1
 Red - #F97B66
 Yellow - #FCC04F
 BG - #21293a
-BG-light - #FD6a91
+BG-light - #5D6A91
 text - #F2F5F7
 */
 
@@ -23,7 +23,8 @@ a {
 }
 h1, h2, h3, h4 {
     margin:0;
-    margin-bottom:1rem;
+    margin-top:1rem;
+    margin-bottom:.25rem;
 }
 .button {
     cursor:pointer;

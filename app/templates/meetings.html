@@ -17,13 +17,23 @@
 </div>
 <div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
 	<div id="meetings-location-map">
-		<h3>Your Location</h3>
+		<h2>Your Location</h2>
 	</div>
-	<h3>Name this meeting</h3>
-	<input type="text" ng-model="newMeetingName">
-	<h3>Select your approved meeting locations</h3>
+	<h2>Your Name</h2>
+	<div class="input-wrap">
+		<input type="text" ng-model="usersName" placeholder="Name">
+		<span></span>
+	</div>
+	<h2>Name this meeting</h2>
+	<div class="input-wrap">
+		<input type="text" ng-model="newMeetingName" placeholder="Meeting Name">
+		<span></span>
+	</div>
+	<h2>Meeting Locations</h2>
 	<label ng-repeat="location in locationTypes" title="{{location.googleId}}">
 		<input type="checkbox" ng-model="location.approved">
-		{{location.name}}
+		<span class="mdi mdi-checkbox-blank-outline" ng-hide="location.approved"></span>
+		<span class="mdi mdi-checkbox-marked" ng-show="location.approved"></span>
+		<span>{{location.name}}</span>
 	</label>
 </div>

@@ -66,10 +66,10 @@
 	width:100%;
 	padding:2rem;
 	padding-top:42vh;
-	background:#333;
+	background:#181e2a;
 	-webkit-transform:translate3d(100%, 0, 0);
 	transform:translate3d(100%, 0, 0);
-	transition:.5s;
+	transition: transform .5s;
 }
 #meetings-new-page.show {
 	-webkit-transform:translate3d(0, 0, 0);
@@ -83,4 +83,49 @@
 	height:40vh;
 	padding:2rem;
 	background:#FCC04F;
+}
+#meetings-new-page .input-wrap {
+	location:relative;
+	margin: .5rem 0;
+}
+#meetings-new-page .input-wrap input {
+	background: transparent;
+	border:none;
+	outline:none;
+	margin:0;
+	padding:.5rem;
+	width:100%;
+	opacity:.75;
+	color:#03c3e2;
+}
+#meetings-new-page .input-wrap input:focus {
+	opacity:1;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	transition:box-shadow .1s;
+}
+#meetings-new-page .input-wrap span {
+	position:absolute;
+	bottom:0;
+	left:0;
+	height:100%;
+	width:0;
+	border-left:2px solid #03c3e2;
+	border-bottom:2px solid #03c3e2;
+	transition:.5s cubic-bezier(.5,0,.2,1);
+}
+#meetings-new-page .input-wrap input:focus + span {
+	height:0;
+	width:100%;
+}
+#meetings-new-page label {
+	margin:.25rem 0;
+}
+#meetings-new-page label input {
+	display:none;
+}
+#meetings-new-page input[type="checkbox"]:checked ~ span:last-child {
+	color:#03c3e2;
+}
+#meetings-new-page label .mdi-checkbox-marked {
+	color:#03c3e2;
 }
