@@ -1,20 +1,45 @@
 <div id="maps-action-bar" class="layout horizontal center shadow-1">
-	<div ng-click="mode='map'" class="flex">
-		<i class="mdi mdi-earth" ng-class="{mode: mode=='map'}"></i>
+	<a href="#/meetings">
+		<i class="mdi mdi-arrow-left"></i>
+	</a>
+	<div class="meetingName">{{meetingName}}</div>
+	<span class="flex"></span>
+	<div ng-click="showingSharing = !showingSharing; showingSettings = false">
+		<i class="mdi mdi-share-variant" ng-class="{mode: showingSharing}"></i>
 	</div>
-	<div ng-click="mode='settings'" class="flex">
-		<i class="mdi mdi-settings" ng-class="{mode: mode=='settings'}"></i>
-	</div>
-	<div ng-click="mode='share'" class="flex">
-		<i class="mdi mdi-share-variant" ng-class="{mode: mode=='share'}"></i>
-	</div>
-	<div ng-click="mode='results'" ng-show='isCreator' class="flex">
-		<i class="mdi mdi-magnify" ng-class="{mode: mode=='results'}"></i>
+	<div ng-click="showingSettings = !showingSettings; showingSharing = false">
+		<i class="mdi mdi-settings" ng-class="{mode: showingSettings}"></i>
 	</div>
 </div>
-<div id="map">
-	<div id="map-cover" ng-hide="mode=='map'"></div>
-    <div id="map-view"></div>
+
+<div id="map" class="layout vertical flex">
+    <div id="map-view" class="flex"></div>
+
+
+    <div id="sharingMenu" ng-show="showingSharing">
+		<div>Copy This Link and Share!</div>
+		<div class="input-wrap">
+			<input type="text" ng-model="link" readonly onClick="this.setSelectionRange(0, this.value.length)">
+			<span></span>
+		</div>
+	</div>
+
+
+	<div id="settingsMenu" ng-show="showingSettings" class="">
+		<h3>Members</h3>
+		<div ng-repeat="member in members" class="member layout horizontal" ng-class="{online: member.online == true}">
+			<span>{{member.name}}</span>
+			<span class="flex"></span>
+			<span title="Ignore this user's preferences" ng-click="member.ignore = !member.ignore" ng-class="{ignored: member.ignore}"><i class="mdi mdi-block-helper"></i></span>
+		</div>
+		<h3>Acceptable Meeting Places</h3>
+		<div ng-repeat="type in types" class="checkbox-parent layout horizontal" ng-class="{checked: type.value}" ng-click="toggleVote($index, type.type)">
+			<i class="mdi mdi-checkbox-blank-outline" ng-show="!type.value"></i>
+			<i class="mdi mdi-checkbox-marked" ng-show="type.value"></i>
+			<div>{{type.name}}</div>
+		</div>
+	</div>
+
 </div>
 <div ng-show="mode=='settings'">
 	<div ng-click="showGroup=!showGroup">
@@ -35,14 +60,10 @@
 
 	</div>
 </div>
-<div ng-show="mode=='results'">
+<!-- <div ng-show="mode=='results'">
 	<button ng-click="search()">Search</button>
 	<div ng-repeat="result in results" ng-click="showResult(result)">
     	<img src="{{result.icon}}" />
     	<span>{{result.name}}</span>
 	</div>
-</div>
-<div ng-show="mode=='share'">
-	<div>Copy this link and share it with your group</div>
-	<div>{{link}}</div>
-</div>
+</div> -->

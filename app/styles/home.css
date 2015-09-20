@@ -58,7 +58,7 @@
 	right: 0;
 	text-align: center;
 }
-a[href="#/meetings"],  a[href="#/about"]{
+#gettingStarted a,  a[href="#/about"]{
 	position:relative;
 	top:-.75em;
 	padding:1rem 1rem;

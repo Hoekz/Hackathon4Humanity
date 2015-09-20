@@ -20,6 +20,7 @@ body{
 }
 a {
     text-decoration:none;
+    color:#F2F5F7;
 }
 h1, h2, h3, h4 {
     margin:0;
@@ -29,7 +30,7 @@ h1, h2, h3, h4 {
 .button {
     cursor:pointer;
 }
-.noselect {
+.noselect, i {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -57,4 +58,38 @@ ng-view {
     z-index: 1;
     background: transparent;
     overflow:hidden;
+}
+
+.input-wrap {
+    location:relative;
+    margin: .5rem 0;
+}
+.input-wrap input {
+    background: transparent;
+    border:none;
+    outline:none;
+    margin:0;
+    padding:.5rem;
+    width:100%;
+    opacity:.75;
+    color:#03c3e2;
+}
+.input-wrap input:focus {
+    opacity:1;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:box-shadow .1s;
+}
+.input-wrap span {
+    position:absolute;
+    bottom:0;
+    left:0;
+    height:100%;
+    width:0;
+    border-left:2px solid #03c3e2;
+    border-bottom:2px solid #03c3e2;
+    transition:.5s cubic-bezier(.5,0,.2,1);
+}
+.input-wrap input:focus + span {
+    height:0;
+    width:100%;
 }
