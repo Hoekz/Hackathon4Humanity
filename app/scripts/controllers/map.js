@@ -5,6 +5,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
     $scope.meetingName = "WhatisthisMeetingCalled???";
+    $scope.name = memory.name;
     $scope.link = location.href;
     $scope.results = [];
     if(!memory.groups){
@@ -16,10 +17,14 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
         $scope.isCreator = false;
     }
     $scope.mode = 'map';
-    $scope.showingSharing = true;
+    $scope.showingSharing = false;
     $scope.showingSettings = false;
 
     $scope.toggleLocationMode = map.toggleLocationMode;
+
+    $scope.expand = function(id) {
+        document.querySelector("#" + id).classList.toggle("expand");
+    };
 
     $scope.toggleIgnore = function(name){
         if(group.members[memory.name].creator && name){
@@ -74,7 +79,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
 
     $scope.showGroup = false;
     $scope.members = [];
-    $scope.members.push({name: "I changed Shite"});
+    $scope.members.push({name: "JS Broke Somewhere"});
 
     $scope.updateList = function(){
         memory.groupSubPage = $scope.mode;

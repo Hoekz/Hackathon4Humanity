@@ -13,7 +13,7 @@
 </div>
 
 <div id="map" class="layout vertical flex">
-    <div id="map-view" class="flex"></div>
+    <div id="map-view" ng-click="showingSettings = false; showingSharing = false" class="flex"></div>
 
 
     <div id="sharingMenu" ng-show="showingSharing">
@@ -26,44 +26,33 @@
 
 
 	<div id="settingsMenu" ng-show="showingSettings" class="">
-		<h3>Members</h3>
-		<div ng-repeat="member in members" class="member layout horizontal" ng-class="{online: member.online == true}">
-			<span>{{member.name}}</span>
-			<span class="flex"></span>
-			<span title="Ignore this user's preferences" ng-click="member.ignore = !member.ignore" ng-class="{ignored: member.ignore}"><i class="mdi mdi-block-helper"></i></span>
-		</div>
-		<h3>Acceptable Meeting Places</h3>
-		<div ng-repeat="type in types" class="checkbox-parent layout horizontal" ng-class="{checked: type.value}" ng-click="toggleVote($index, type.type)">
-			<i class="mdi mdi-checkbox-blank-outline" ng-show="!type.value"></i>
-			<i class="mdi mdi-checkbox-marked" ng-show="type.value"></i>
-			<div>{{type.name}}</div>
-		</div>
-	</div>
-
-</div>
-<div ng-show="mode=='settings'">
-	<div ng-click="showGroup=!showGroup">
-		<div ng-hide="showGroup" class="member toggle">Show Members</div>
-		<div ng-show="showGroup">
-			<div class="member toggle">Hide Members</div>
-			<div ng-repeat="member in members" class="member">
-				<div ng-show="member.online===true" class="online"></div>{{member.name}}
+		<div class="overflow-wrapper">
+			<h2 style="margin:0">Settings</h2>
+			<h3>Your Name</h3>
+			<div class="input-wrap">
+				<input type="text" ng-model="name">
+				<span></span>
+			</div>
+			<div class="submenu" id="memberSubMenu">
+				<div ng-click="expand('memberSubMenu')"><span class="mdi mdi-chevron-right"></span><span><h3>Members</h3></span></div>
+				<div ng-repeat="member in members" class="member layout horizontal" ng-class="{online: member.online == true}">
+					<span>{{member.name}}</span>
+					<span class="flex"></span>
+					<span title="Ignore this user's preferences" ng-click="member.ignore = !member.ignore" ng-class="{ignored: member.ignore}"><i class="mdi mdi-block-helper"></i></span>
+				</div>
+			</div>
+			<div class="submenu" id="placeSubMenu">
+				<div ng-click="expand('placeSubMenu')"><span class="mdi mdi-chevron-right"></span><span><h3>Acceptable Meetings Places</h3></span></div>
+				<div ng-repeat="type in types" class="checkbox-parent layout horizontal" ng-class="{checked: type.value}" ng-click="toggleVote($index, type.type)">
+					<i class="mdi mdi-checkbox-blank-outline" ng-show="!type.value"></i>
+					<i class="mdi mdi-checkbox-marked" ng-show="type.value"></i>
+					<div>{{type.name}}</div>
+				</div>
+			</div>
+			<div class="submenu" id="rangeSubMenu">
+				<div ng-click="expand('rangeSubMenu')"><span class="mdi mdi-chevron-right"></span><span><h3>Search Radius: {{radius + ((radius==1) ? ' mile' : ' miles')}}</h3></span></div>
+				<input type="range" max="10" min="1" ng-model="radius">
 			</div>
 		</div>
 	</div>
-	<div>Search Radius: {{radius + ((radius==1) ? ' mile' : ' miles')}}</div>
-	<input type="range" max="10" min="1" ng-model="radius">
-	<div ng-repeat="type in types" class="checkbox-parent" ng-click="toggleVote($index, type.type)">
-		<div class="checkbox" ng-class="{checked: type.value}"></div>{{type.name}}
-	</div>
-	<div ng-show="isCreator">
-
-	</div>
 </div>
-<!-- <div ng-show="mode=='results'">
-	<button ng-click="search()">Search</button>
-	<div ng-repeat="result in results" ng-click="showResult(result)">
-    	<img src="{{result.icon}}" />
-    	<span>{{result.name}}</span>
-	</div>
-</div> -->

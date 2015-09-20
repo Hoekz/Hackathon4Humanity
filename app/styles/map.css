@@ -46,9 +46,10 @@
 }
 
 .checkbox-parent{
+    margin-top:.5rem;
     padding: .25rem;
     padding-left:.5rem;
-    margin-left:;
+    cursor:pointer;
 }
 .checkbox-parent i {
     margin-right:.5rem;
@@ -89,12 +90,14 @@ input[type='range']{
     border-top: 1rem solid #21293a;
     border-bottom: 1rem solid #21293a;
     filter: drop-shadow(0px 3px 3px rgba(0,0,0,.5));
-    overflow-y: auto;
+}
+#settingsMenu {
+    padding:0;
 }
 #sharingMenu::before, #settingsMenu::before {
     position:absolute;
     right:5rem;
-    top:-.5rem;
+    top:-1.5rem;
     content:'';
     display:block;
     width:1rem;
@@ -104,4 +107,31 @@ input[type='range']{
 }
 #settingsMenu::before {
     right:.54rem;
+}
+#settingsMenu .overflow-wrapper {
+    height:100%;
+    max-height:calc(100vh - 8rem);
+    width:100%;
+    overflow-y:auto;
+    position:relative;
+    padding:1rem;
+}
+#settingsMenu h3 {
+    display:inline-block;
+}
+#settingsMenu > .overflow-wrapper > div:not(.input-wrap) {
+    height:2.75rem;
+    overflow:hidden;
+}
+#settingsMenu > .overflow-wrapper > div.expand {
+    height:auto;
+}
+#settingsMenu > .overflow-wrapper > div.expand  span.mdi {
+    transform:rotate(90deg);
+}
+.submenu {
+    cursor:pointer;
+}
+.submenu span.mdi {
+    transition:.2s;
 }
