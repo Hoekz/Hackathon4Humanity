@@ -13,7 +13,13 @@
 	</div>
 </div>
 <div class="flex layout vertical scroll">
-	<div style="margin-bottom:2000px"></div>
+	<div style="margin-bottom:2000px">
+		<div ng-repeat="meeting in meetings"
+			 ng-click="open(meeting.id)"
+			 ng-class="{creator: meeting.creator}">
+			{{meeting.name}}
+		</div>
+	</div>
 </div>
 <div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
 	<div id="meetings-location-map">

@@ -38,7 +38,12 @@
 				<div ng-repeat="member in members" class="member layout horizontal" ng-class="{online: member.online == true}">
 					<span>{{member.name}}</span>
 					<span class="flex"></span>
-					<span title="Ignore this user's preferences" ng-click="member.ignore = !member.ignore" ng-class="{ignored: member.ignore}"><i class="mdi mdi-block-helper"></i></span>
+					<span title="Ignore this user's preferences"
+						  ng-click="toggleIgnore(member.name)"
+						  ng-class="{ignored: member.ignore}"
+						  ng-show="isCreator">
+						<i class="mdi mdi-block-helper"></i>
+					</span>
 				</div>
 			</div>
 			<div class="submenu" id="placeSubMenu">

@@ -1,10 +1,10 @@
-app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, group, map, memory){
+app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function($scope, group, map, memory, $location){
     //display link to be sent to group members
     //have menu to access settings (voting, distance, boolean to factor in location)
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
-    $scope.meetingName = "WhatisthisMeetingCalled???";
+    $scope.meetingName = "Group";
     $scope.name = memory.name;
     $scope.link = location.href;
     $scope.results = [];
@@ -44,7 +44,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
         if(!memory.name || !(memory.name in group.members)) {
             memory.name = prompt('name', '');//don't use prompt, but doe need to check
         }
-        group.joinGroup({
+        var joined = group.joinGroup({
             name: memory.name,
             lat: map.location.lat,
             lng: map.location.lng
@@ -58,6 +58,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
                 creator: group.members[memory.name].creator,
                 votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}
             };
+            console.log(memory.groups);
             for(var type in group.options.types){
                 if(!(type in memory.groups[group.id()].votes)){
                     group.options.types[type]++;
@@ -67,6 +68,9 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', function($scope, grou
             $scope.updateList();
             $scope.isCreator = group.members[memory.name].creator;
         });
+        if(!joined){
+            $location.path('/');
+        }
         map.listen();
     };
 

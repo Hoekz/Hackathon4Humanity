@@ -43,14 +43,14 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             options: {
                 radius: 5,
                 types: {}
-            },
-            chat: []
+            }
         };
         root[key].members[creator.name] = {
             lat: creator.lat,
             lng: creator.lng,
             online: true,
-            creator: true
+            creator: true,
+            alias: creator.name
         };
         for(var i = 0; i < selections.length; i++){
             root[key].options.types[selections[i]] = 1;
@@ -78,7 +78,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
                 lat: person.lat,
                 lng: person.lng,
                 creator: group.members[person.name] ? group.members[person.name].creator : false,
-                online: true
+                online: true,
+                alias: person.name
             };
             root.$save().then(function(){
                 if(success) success();
@@ -149,26 +150,3 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
 
     return self;
 }]);
-
-//Usage:
-//createGroup
-//description: creates a new group object in Firebase with initial arguments
-//creator: {name: "First Last", lat: 123.123, lng: 123.123},
-//groupName: (optional, passing in empty string will generate a group name) "Lunch Group",
-//selections: ['cafe', 'mosque', 'lawyer'] (selections that will be voted on)
-
-//joinGroup
-//description: adds a person to an existing group
-//person: {name: "First Last", lat: 123.123, lng: 123.123}
-
-//online
-//description: sets user state to online and adds a listener for when you disconnect or when other devices disconnect
-//person: "First Last"
-
-//leaveGroup
-//description: deletes a person from the current group
-//person: "First Last"
-
-//onUpdate
-//description: adds a listener to group changes (new members, change in positions, etc.)
-//listener: function(){/*do something because the group changed*/}

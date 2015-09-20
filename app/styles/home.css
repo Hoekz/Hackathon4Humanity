@@ -25,6 +25,10 @@
 	background-position: bottom left;
 	clip-path: circle(35vw at center);
 	filter: grayscale(100%) contrast(100%) opacity(17.5%);
+	-webkit-clip-path: circle(35vw at center);
+	-webkit-filter: grayscale(100%) contrast(100%) opacity(17.5%);
+	-moz-clip-path: circle(35vw at center);
+	-moz-filter: grayscale(100%) contrast(100%) opacity(17.5%);
 	line-height:1;
 	z-index:1;
 }
