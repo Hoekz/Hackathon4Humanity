@@ -21,7 +21,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
     canvas.width = 32;
     canvas.height = 48;
     var context = canvas.getContext('2d');
-    var generateImageUrl = function(name){
+    var generateImageUrl = function(name, flag){
         var str = name.toUpperCase().split(' ');
         if(str.length > 1){
             str = str[0].substr(0, 1) + str[1].substr(0, 1);
@@ -29,7 +29,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
             str = str[0];
         }
         context.clearRect(0, 0, 32, 48);
-        context.fillStyle = randomColor({luminosity: 'dark'});
+        context.fillStyle = getNewColor(flag ? 'blue' : 'orange');
         context.beginPath();
         context.arc(16, 16, 16, 0, Math.PI, true);
         context.bezierCurveTo(0, 32, 16, 32, 16, 48);
@@ -93,6 +93,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
 
     var updatePeople = function(){
         var members = group.members;
+        var count = 0;
         for(var person in members){
             if(!members[person].ignore){
                 if ((person in people)) {
@@ -108,10 +109,13 @@ app.factory('map', ['group', 'memory', function(group, memory){
                 self.removePerson(person);
             }else{
                 bounds.extend(people[person].getPosition());
+                count++;
             }
         }
-        self.map.setCenter(bounds.getCenter());
-        self.map.fitBounds(bounds);
+        if(count){
+            self.map.setCenter(bounds.getCenter());
+            self.map.fitBounds(bounds);
+        }
     };
 
     self.search = function(callback){
@@ -224,3 +228,17 @@ app.factory('map', ['group', 'memory', function(group, memory){
 
     return self;
 }]);
+
+function getNewColor(hue){
+    if(!this.colors){
+        this.colors = {};
+        this.count = {};
+    }
+    if(!this.colors[hue]){
+        this.colors[hue] = randomColor({hue: hue, count: 18, luminosity: 'dark'});
+        this.count[hue] = 0;
+    }
+    var color = this.colors[hue][this.count[hue]];
+    this.count[hue]++;
+    return color;
+}

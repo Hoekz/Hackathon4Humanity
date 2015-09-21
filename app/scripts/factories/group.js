@@ -52,7 +52,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             lng: creator.lng,
             online: true,
             creator: true,
-            alias: creator.name
+            ignore: false
         };
         for(var i = 0; i < selections.length; i++){
             root[key].options.types[selections[i]] = 1;
@@ -73,7 +73,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     };
 
     self.joinGroup = function(person, success){
-        if(!ready) return null;
+        id = $routeParams.id;
+        if(!ready) return false;
         if(id in root){
             group = root[id];
             group.members[person.name] = {
@@ -81,7 +82,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
                 lng: person.lng,
                 creator: group.members[person.name] ? group.members[person.name].creator : false,
                 online: true,
-                alias: person.name
+                ignore: false
             };
             root.$save().then(function(){
                 if(success) success();
@@ -107,7 +108,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     };
 
     self.toggleIgnore = function(person){
-        group[person].ignore = !group[person].ignore;
+        group.members[person].ignore = !group.members[person].ignore;
+        group.$save();
     };
 
     self.leaveGroup = function(person, success){
