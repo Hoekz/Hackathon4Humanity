@@ -79,26 +79,24 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
 
     $scope.showGroup = false;
     $scope.members = [];
-    $scope.members.push({name: "JS Broke Somewhere"});
 
     $scope.updateList = function(){
-        console.log("Firebase gave me some new info");
         $scope.meetingName = group.name;
         $scope.members = [];
         for(var person in group.members){
-            $scope.members.push({
-                name: person,
-                online: group.members[person].online
-            });
+            $scope.members.push(group.members[person]);
+            $scope.members[$scope.members.length - 1].name = person;
         }
         $scope.radius = group.options.radius;
         $scope.types = [];
-        for(var type in group.options.types){
-            $scope.types.push({
-                name: capIt(type.replace(/_/g, " ")),
-                type: type,
-                value: memory.groups[group.id()].votes[type]
-            });
+        if(memory.groups[group.id()]){
+            for (var type in group.options.types) {
+                $scope.types.push({
+                    name: capIt(type.replace(/_/g, " ")),
+                    type: type,
+                    value: memory.groups[group.id()].votes[type]
+                });
+            }
         }
     };
 
