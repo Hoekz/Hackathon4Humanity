@@ -85,12 +85,11 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
             group.online(memory.name);
             memory.groups[group.id().toString()] = {
                 name: group.name,
-                date: group.timestamp,
+                date: new Date(group.timestamp).toISOString().substr(5, 5).replace("-", "/"),
                 members: objsize(group.members),
                 creator: group.members[memory.name].creator,
                 votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}
             };
-            console.log(group.members);
             for(var type in group.options.types){
                 if(!(type in memory.groups[group.id()].votes)){
                     group.options.types[type]++;

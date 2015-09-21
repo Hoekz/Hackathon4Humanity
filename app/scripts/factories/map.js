@@ -97,7 +97,6 @@ app.factory('map', ['group', 'memory', function(group, memory){
 
     var updatePeople = function(){
         var members = group.members;
-        console.log("People in this meeting", group.members);
         var count = 0;
         var newPeople = false;
         for(var person in members){

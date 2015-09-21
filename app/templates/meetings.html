@@ -21,7 +21,7 @@
 		 ng-repeat="meeting in meetings"
 		 ng-class="{creator: meeting.creator}">
 		<h3 class="name">{{meeting.name}}</h3>
-		<div class="date">{{meeting.date}}</div>
+		<div class="date">Created: {{meeting.date}}</div>
 		<div class="participants"><div class="mdi mdi-account"></div><span>{{meeting.members}}</span></div>
 		<div class="url">centerofus.firebaseapp.com/#/groups/{{meeting.id}}</div>
 	</a>
