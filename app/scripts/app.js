@@ -22,5 +22,9 @@ app.config(["$routeProvider", function($routeProvider){
             controller: 'meetings',
             templateUrl: 'templates/meetings.html'
         })
+        .when('/flush', {
+            controller: 'flush',
+            templateUrl: 'templates/blank.html'
+        })
         .otherwise('/');
 }]);

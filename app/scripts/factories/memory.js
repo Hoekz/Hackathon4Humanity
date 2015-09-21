@@ -11,6 +11,7 @@ app.factory('memory', ['$interval', function($interval){
 
     self.write = function(){
         localStorage.setItem('data', JSON.stringify(self.data));
+        prevData = self.data;
     };
 
     self.erase = function(){
@@ -23,7 +24,6 @@ app.factory('memory', ['$interval', function($interval){
     self.read();
 
     $interval(self.write, 100);
-
     return self.data;
 }]);
 

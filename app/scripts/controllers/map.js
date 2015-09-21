@@ -7,6 +7,9 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     $scope.name = memory.name;
     $scope.link = location.href;
     $scope.results = [];
+
+    if (!group.members)
+        group.members = [];
     if(!memory.groups){
         memory.groups = {};
     }
@@ -23,7 +26,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     };
 
     $scope.toggleIgnore = function(name){
-        if(group.members[memory.name].creator && name){
+        if($scope.isCreator && name){
             group.toggleIgnore(name);
         }else{
             group.toggleIgnore(memory.name);
@@ -37,7 +40,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     };
 
     var setup = function(){
-        if(!memory.name || !(memory.name in group.members)) {
+        if(!memory.name) {
             memory.name = prompt('name', '');//don't use prompt, but doe need to check
             $scope.name = memory.name;
         }
@@ -47,10 +50,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
             lng: map.location.lng
         }, function(){
             group.online(memory.name);
-            if(!memory.groups){
-                memory.groups = {};
-            }
-            memory.groups[group.id()] = {
+            memory.groups[group.id().toString()] = {
                 name: group.name,
                 creator: group.members[memory.name].creator,
                 votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}

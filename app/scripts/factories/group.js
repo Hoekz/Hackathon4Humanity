@@ -7,7 +7,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     var group = null;
     var userRef = null;
     var ready = false;
-    var onReady = function(){console.log("Ready Function not specified yet")};
+    var onReady = function(){console.log("Ready Function not specified yet");};
 
     self.members = [];
 

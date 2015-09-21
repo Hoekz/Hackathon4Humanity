@@ -100,6 +100,7 @@
 	min-height:5rem;
 	border-top:.1rem solid #5D6A91;
 	border-bottom:.1rem solid black;
+	background:rgba(255,255,255,.05);
 	position:relative;
 }
 .meeting-list-entry .name {
@@ -129,4 +130,27 @@
 	max-width:calc(100vw - 14rem);
 	background:transparent;
 	border:none;
+}
+.sub1, .sub2, .sub3 {
+	margin-left:1rem;
+	margin-bottom:.5rem;
+	opacity:.65;
+}
+.sub1 {
+	order: 1;
+}
+.sub2 {
+	order:3;
+}
+.sub3 {
+	order:5;
+}
+.meeting-list-entry {
+	order:4;
+}
+.meeting-list-entry.creator {
+	order:2;
+}
+.meeting-list-entry.closed {
+	order:6;
 }
