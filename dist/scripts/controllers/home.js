@@ -1,0 +1,1 @@
+app.controller("home",["$scope","memory",function(o,e){}]);

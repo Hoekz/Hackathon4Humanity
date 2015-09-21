@@ -96,3 +96,37 @@
 #meetings-new-page label .mdi-checkbox-marked {
 	color:#03c3e2;
 }
+.meeting-list-entry {
+	min-height:5rem;
+	border-top:.1rem solid #5D6A91;
+	border-bottom:.1rem solid black;
+	position:relative;
+}
+.meeting-list-entry .name {
+	position:absolute;
+	top:1rem;
+	left:1.75rem;
+	margin:0;
+}
+.meeting-list-entry .date {
+	position:absolute;
+	bottom:1rem;
+	right:1.75rem;
+	margin:0;
+	opacity:.75;
+}
+.meeting-list-entry .participants {
+	position:absolute;
+	top:1rem;
+	right:1.75rem;
+	font-size:1.25rem;
+}
+.meeting-list-entry .url{
+	position:absolute;
+	bottom:1rem;
+	left:1.75rem;
+	width:80vw;
+	max-width:calc(100vw - 14rem);
+	background:transparent;
+	border:none;
+}

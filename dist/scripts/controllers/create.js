@@ -1,0 +1,1 @@
+app.controller("create",["$scope","group","memory","map","$location",function(e,a,o,n,t){var c=function(){a.createGroup({name:o.name,lat:n.location.lat,lng:n.location.lng},"Group",["cafe","cemetery"],function(e){t.path("/group/"+e)})};e.create=function(){n.requestLocation(function(){a.ready(c)&&c()})},o.name?e.create():(o.name=prompt("name","James Hoekzema"),e.create())}]);

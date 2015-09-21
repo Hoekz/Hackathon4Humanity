@@ -13,6 +13,16 @@
 	</div>
 </div>
 <div class="flex layout vertical scroll">
+	<h4>Your Meetings</h4>
+	<a class="meeting-list-entry"
+		 href="#/group/{{meeting.id}}"
+		 ng-repeat="meeting in meetings"
+		 ng-class="{creator: meeting.creator}">
+		<h3 class="name">{{meeting.name}}</h3>
+		<div class="date">{{meeting.date}}</div>
+		<div class="participants"><div class="mdi mdi-account"></div><span>{{meeting.members}}</span></div>
+		<input class="url" type="text" value="centerofus.firebaseapp.com/#/groups/{{meeting.id}}" readonly onClick="this.setSelectionRange(0, this.value.length)"/>
+	</a>
 	<div style="margin-bottom:2000px">
 		<div ng-repeat="meeting in meetings"
 			 ng-click="open(meeting.id)"
@@ -27,7 +37,7 @@
 	</div>
 	<h2>Your Name</h2>
 	<div class="input-wrap">
-		<input type="text" ng-model="usersName" placeholder="Name">
+		<input type="text" ng-model="name" placeholder="Name">
 		<span></span>
 	</div>
 	<h2>Name this meeting</h2>
