@@ -45,20 +45,20 @@ app.factory('map', ['group', 'memory', function(group, memory){
     };
 
     self.createMap = function(){
-        if(!self.map){
-            if(mapsReady){
-                var domMap = document.getElementById("map-view");
-                var settings = {
-                    zoom: 18,
-                    maxZoom: 18
-                };
-                if(self.location){
-                    settings.center = self.location;
-                }
-                self.map = new google.maps.Map(domMap, settings);
-            }else{
-                setTimeout(self.createMap, 10);
+        if(mapsReady){
+            var domMap = document.getElementById("map-view");
+            var settings = {
+                zoom: 18,
+                maxZoom: 18
+            };
+            if(self.location){
+                settings.center = self.location;
             }
+            self.map = new google.maps.Map(domMap, settings);
+            for(var person in people){
+                people[person].setMap(self.map);
+            }
+            updatePeople();
         }
     };
 

@@ -6,7 +6,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 	$scope.title = "Meetings";
 	$scope.newMeetingName = "";
 	$scope.locationTypes = categories;
-	$scope.name = "James Hoekzema";
+	$scope.name = "";
 
     $scope.meetings = [];
     for(var prop in memory.groups){
@@ -58,6 +58,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 			types = types.concat(subtypes);
 		}
 		for(var i = 0; i < types.length; i++) types[i] = types[i].toLowerCase().replace(/ /g, '_');
+		memory.name = $scope.name;
 		group.createGroup({
 			name: memory.name,
 			lat: map.location.lat,
