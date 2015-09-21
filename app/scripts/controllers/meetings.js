@@ -1,12 +1,9 @@
 app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$location', function($scope, memory, categories, group, map, $location){
-	if(!memory.groups){
-		memory.groups = [];
-	}
+
 	$scope.isAdding = false;
 	$scope.title = "Meetings";
 	$scope.newMeetingName = "";
 	$scope.locationTypes = categories;
-	$scope.name = "James Hoekzema";
 
     $scope.meetings = [];
     for(var prop in memory.groups){
@@ -16,6 +13,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
             creator: memory.groups[prop].creator
         });
     }
+    $scope.name = memory.name;
 
 	var error = function(str){
 		alert(str);
@@ -74,8 +72,6 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 			for(var i = 0; i < types.length; i++){
                 memory.groups[key].votes[types[i]] = true;
             }
-			memory.groupSubPage = 'share';
-            console.log(memory.groups);
 			$location.path('/group/' + key);
 		});
 	};
