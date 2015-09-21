@@ -56,7 +56,8 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 			types = types.concat(subtypes);
 		}
 		for(var i = 0; i < types.length; i++) types[i] = types[i].toLowerCase().replace(/ /g, '_');
-		memory.name = $scope.name;
+		if (!memory.name)
+			memory.name = $scope.name;
 		group.createGroup({
 			name: memory.name,
 			lat: map.location.lat,
