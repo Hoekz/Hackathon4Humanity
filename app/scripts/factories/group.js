@@ -7,7 +7,9 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     var group = null;
     var userRef = null;
     var ready = false;
-    var onReady = function(){};
+    var onReady = function(){console.log("Ready Function not specified yet")};
+
+    self.members = [];
 
     self.ready = function(listener){
         if(listener) onReady = listener;
@@ -127,6 +129,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             groupWatch.$watch(function(){
                 if(group){
                     group = groupWatch;
+                    self.name = group.name;
                     self.members = group.members;
                     self.options = group.options;
                     clearTimeout(delay);
@@ -138,10 +141,6 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
 
     self.id = function(){
         return id;
-    };
-
-    self.name = function(){
-        return group ? group.name : null;
     };
 
     $interval(function(){

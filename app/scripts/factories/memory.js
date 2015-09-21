@@ -1,6 +1,5 @@
 app.factory('memory', ['$interval', function($interval){
     var self = this;
-
     self.data = {};
 
     self.read = function(){
@@ -23,7 +22,7 @@ app.factory('memory', ['$interval', function($interval){
 
     self.read();
 
-    $interval(self.write, 10);
+    $interval(self.write, 100);
 
     return self.data;
 }]);

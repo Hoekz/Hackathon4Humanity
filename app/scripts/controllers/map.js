@@ -4,7 +4,6 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
-    $scope.meetingName = "Group";
     $scope.name = memory.name;
     $scope.link = location.href;
     $scope.results = [];
@@ -16,11 +15,8 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     }else{
         $scope.isCreator = false;
     }
-    $scope.mode = 'map';
     $scope.showingSharing = false;
     $scope.showingSettings = false;
-
-    $scope.toggleLocationMode = map.toggleLocationMode;
 
     $scope.expand = function(id) {
         document.querySelector("#" + id).classList.toggle("expand");
@@ -43,6 +39,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     var setup = function(){
         if(!memory.name || !(memory.name in group.members)) {
             memory.name = prompt('name', '');//don't use prompt, but doe need to check
+            $scope.name = memory.name;
         }
         var joined = group.joinGroup({
             name: memory.name,
@@ -54,11 +51,10 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
                 memory.groups = {};
             }
             memory.groups[group.id()] = {
-                name: group.name(),
+                name: group.name,
                 creator: group.members[memory.name].creator,
                 votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}
             };
-            console.log(memory.groups);
             for(var type in group.options.types){
                 if(!(type in memory.groups[group.id()].votes)){
                     group.options.types[type]++;
@@ -86,7 +82,8 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     $scope.members.push({name: "JS Broke Somewhere"});
 
     $scope.updateList = function(){
-        memory.groupSubPage = $scope.mode;
+        console.log("Firebase gave me some new info");
+        $scope.meetingName = group.name;
         $scope.members = [];
         for(var person in group.members){
             $scope.members.push({
