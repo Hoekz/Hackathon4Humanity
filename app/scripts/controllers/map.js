@@ -8,8 +8,31 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     $scope.link = location.href;
     $scope.results = [];
 
-    if (!group.members)
-        group.members = [];
+    $scope.updateList = function(){
+        $scope.meetingName = group.name;
+        $scope.members = [];
+        for(var person in group.members){
+            $scope.members.push(group.members[person]);
+            $scope.members[$scope.members.length - 1].name = person;
+        }
+        $scope.radius = group.options.radius;
+        $scope.types = [];
+        if(memory.groups[group.id()]){
+            for (var type in group.options.types) {
+                $scope.types.push({
+                    name: capIt(type.replace(/_/g, " ")),
+                    type: type,
+                    value: memory.groups[group.id()].votes[type]
+                });
+            }
+        }
+        if($scope.isCreator && !group.finalized()) $scope.search();
+        if(group.finalized()) map.finalLocation();
+    };
+
+    group.onUpdate($scope.updateList);
+
+    group.members = [];
     if(!memory.groups){
         memory.groups = {};
     }
@@ -94,36 +117,12 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     $scope.showGroup = false;
     $scope.members = [];
 
-    $scope.updateList = function(){
-        $scope.meetingName = group.name;
-        $scope.members = [];
-        for(var person in group.members){
-            $scope.members.push(group.members[person]);
-            $scope.members[$scope.members.length - 1].name = person;
-        }
-        $scope.radius = group.options.radius;
-        $scope.types = [];
-        if(memory.groups[group.id()]){
-            for (var type in group.options.types) {
-                $scope.types.push({
-                    name: capIt(type.replace(/_/g, " ")),
-                    type: type,
-                    value: memory.groups[group.id()].votes[type]
-                });
-            }
-        }
-        if($scope.isCreator && !group.finalized()) $scope.search();
-        if(group.finalized()) map.finalLocation();
-    };
-
     $scope.toggleVote = function(i, type){
         if(group.finalized()) return null;
         $scope.types[i].value = !$scope.types[i].value;
         group.updateVotes(type, $scope.types[i].value);
         memory.groups[group.id()].votes[type] = $scope.types[i].value;
     };
-
-    group.onUpdate($scope.updateList);
 
     var mapView = document.querySelector('#map-view');
     if(!mapView.hasChildNodes()){
