@@ -10,7 +10,9 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
         $scope.meetings.push({
             id: prop,
             name: memory.groups[prop].name,
-            creator: memory.groups[prop].creator
+            creator: memory.groups[prop].creator,
+            date: memory.groups[prop].date,
+            members: memory.groups[prop].members
         });
     }
     $scope.name = memory.name;

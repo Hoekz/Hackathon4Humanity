@@ -133,11 +133,11 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             groupWatch.$watch(function(){
                 if(group){
                     group = groupWatch;
-                    console.log(group);
                     self.name = group.name;
                     self.members = group.members;
                     self.options = group.options;
                     self.location = group.location;
+                    self.timestamp = group.timestamp;
                     final = !!group.location;
                     clearTimeout(delay);
                     delay = setTimeout(listener, 500);

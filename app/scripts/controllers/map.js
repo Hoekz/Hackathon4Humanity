@@ -4,6 +4,14 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     //have chat area
     //for creator: have button to find a new location / accept a location
     //for after location chosen, either show directions on map, or offer to open directions in app/google
+    var objsize = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
     $scope.name = memory.name;
     $scope.link = location.href;
     $scope.results = [];
@@ -77,9 +85,12 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
             group.online(memory.name);
             memory.groups[group.id().toString()] = {
                 name: group.name,
+                date: group.timestamp,
+                members: objsize(group.members),
                 creator: group.members[memory.name].creator,
                 votes: memory.groups[group.id()] ? memory.groups[group.id()].votes : {}
             };
+            console.log(group.members);
             for(var type in group.options.types){
                 if(!(type in memory.groups[group.id()].votes)){
                     group.options.types[type]++;
