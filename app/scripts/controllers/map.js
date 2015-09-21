@@ -112,6 +112,11 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     };
 
     group.onUpdate($scope.updateList);
+
+    var map = document.querySelector('#map-view');
+    if(!map.hasChildNodes()){
+        map.createMap();
+    }
 }]);
 
 function capIt(str){return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});}

@@ -20,7 +20,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 	};
 
 	$scope.toggleAddPage = function() {
-		$scope.name = memory.name;
+		$scope.name = memory.name || "";
 		$scope.isAdding = !$scope.isAdding;
 		resetAddPage();
 		if($scope.isAdding) {
