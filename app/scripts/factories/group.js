@@ -7,6 +7,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     var group = null;
     var userRef = null;
     var ready = false;
+    var final = false;
     var onReady = function(){console.log("Ready Function not specified yet");};
 
     self.members = [];
@@ -77,12 +78,13 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         if(!ready) return false;
         if(id in root){
             group = root[id];
+            if(!group.members[person.name] && final) return false;//don't let people join closed groups
             group.members[person.name] = {
                 lat: person.lat,
                 lng: person.lng,
                 creator: group.members[person.name] ? group.members[person.name].creator : false,
                 online: true,
-                ignore: false
+                ignore: group.members[person.name] ? group.members[person.name].ignore : false
             };
             root.$save().then(function(){
                 if(success) success();
@@ -134,6 +136,8 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
                     self.name = group.name;
                     self.members = group.members;
                     self.options = group.options;
+                    self.location = group.location;
+                    final = !!group.location;
                     clearTimeout(delay);
                     delay = setTimeout(listener, 500);
                 }
@@ -141,8 +145,22 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
         }
     };
 
+    self.finalized = function(){
+        return final;
+    };
+
     self.id = function(){
         return id;
+    };
+
+    self.finalLocation = function(floc){
+        console.log(floc);
+        root[id].location = {
+            lat: floc.geometry.location.H,
+            lng: floc.geometry.location.L,
+            name: floc.name
+        };
+        root.$save();
     };
 
     $interval(function(){

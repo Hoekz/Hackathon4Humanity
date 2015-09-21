@@ -141,3 +141,18 @@ input[type='range']{
 .submenu span.mdi {
     transition:.2s;
 }
+
+.display-result {
+    color: black;
+    font-weight: 600;
+}
+.choose-result {
+    margin: 1em auto;
+    border-radius: 4px;
+    height: 2em;
+    background: #F97B66;
+    color: white;
+    text-align: center;
+    padding: .4em;
+    width: 8em;
+}

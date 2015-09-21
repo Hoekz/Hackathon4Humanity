@@ -26,6 +26,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     };
 
     $scope.toggleIgnore = function(name){
+        if(group.finalized()) return null;
         if($scope.isCreator && name){
             group.toggleIgnore(name);
         }else{
@@ -36,6 +37,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
     $scope.search = function(){
         map.search(function(results){
             map.setLocations(results);
+            $scope.results = results;
         });
     };
 
@@ -77,6 +79,18 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
         }
     });
 
+    $scope.choose = function(id){
+        if(group.finalized()) return null;
+        for(var i = 0; i < $scope.results.length; i++){
+            if($scope.results[i].id == id){
+                group.finalLocation($scope.results[i]);
+                return null;
+            }
+        }
+    };
+
+    map.onChoose($scope.choose);
+
     $scope.showGroup = false;
     $scope.members = [];
 
@@ -98,10 +112,12 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
                 });
             }
         }
-        $scope.search();
+        if($scope.isCreator && !group.finalized()) $scope.search();
+        if(group.finalized()) map.finalLocation();
     };
 
     $scope.toggleVote = function(i, type){
+        if(group.finalized()) return null;
         $scope.types[i].value = !$scope.types[i].value;
         group.updateVotes(type, $scope.types[i].value);
         memory.groups[group.id()].votes[type] = $scope.types[i].value;

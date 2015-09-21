@@ -4,7 +4,10 @@ app.factory('map', ['group', 'memory', function(group, memory){
     var useCurrent = memory.useCurrent = memory.useCurrent || true;
     var people = {};
     var loc = [];
+    var floc = null;
     var iWindow = null;
+
+    var template = document.createElement('div');
 
     var rad = function(x){return x * Math.PI / 180;};
     var distance = function(p1, p2){
@@ -30,7 +33,7 @@ app.factory('map', ['group', 'memory', function(group, memory){
             str = str[0];
         }
         context.clearRect(0, 0, 32, 48);
-        context.fillStyle = getNewColor(flag ? 'blue' : 'orange');
+        context.fillStyle = flag ? '#03c3e2' : '#F97B66';
         context.beginPath();
         context.arc(16, 16, 16, 0, Math.PI, true);
         context.bezierCurveTo(0, 32, 16, 32, 16, 48);
@@ -95,12 +98,14 @@ app.factory('map', ['group', 'memory', function(group, memory){
     var updatePeople = function(){
         var members = group.members;
         var count = 0;
+        var newPeople = false;
         for(var person in members){
             if(!members[person].ignore){
                 if ((person in people)) {
                     people[person].setPosition({lat: members[person].lat, lng: members[person].lng});
                 } else {
                     self.addPerson(person, members[person].lat, members[person].lng);
+                    newPeople = true;
                 }
             }
         }
@@ -108,13 +113,19 @@ app.factory('map', ['group', 'memory', function(group, memory){
         for(var person in people){
             if(!(person in members) || members[person].ignore){
                 self.removePerson(person);
+                newPeople = true;
             }else{
                 bounds.extend(people[person].getPosition());
                 count++;
             }
         }
-        if(count){
+        if(count && newPeople){
             self.map.setCenter(bounds.getCenter());
+            if(group.finalized()){
+                var location = new google.maps.LatLng(group.location.lat, group.location.lng);
+                bounds.extend(location);
+                self.map.setCenter(location);
+            }
             self.map.fitBounds(bounds);
         }
     };
@@ -192,14 +203,17 @@ app.factory('map', ['group', 'memory', function(group, memory){
         if(!iWindow){
             iWindow = new google.maps.InfoWindow({content: "", maxWidth: 300});
         }
-        var listener = function(e){
-            iWindow.setContent("");
+        var listener = function(){
+            var click = this.resultRef;
+            iWindow.setContent("<div class='display-result'>" + click.name + "</div><div class='choose-result' onclick='useResult(" + JSON.stringify(click.id) + ")'>Choose</div>");
+            iWindow.open(self.map, this);
         };
 
         for(var i = 0; i < loc.length; i++){
             loc[i].setMap(null);
         }
         loc = [];
+        if(group.finalized()) return self.finalLocation();
         for(var i = 0; i < locations.length; i++) {
             loc.push(new google.maps.Marker({
                 title: locations[i].name,
@@ -207,12 +221,21 @@ app.factory('map', ['group', 'memory', function(group, memory){
                 map: self.map,
                 icon: generateImageUrl(i + 1 + "", true)
             }));
+            loc[i].resultRef = locations[i];
+            google.maps.event.addListener(loc[i], 'click', listener);
         }
     };
 
-    self.finalLocation = function(floc){
+    self.finalLocation = function(){
+        if(floc) return null;
+        floc = new google.maps.Marker({
+            position: new google.maps.LatLng(group.location.lat, group.location.lng),
+            icon: 'images/location.png',
+            title: group.location.name,
+            map: self.map
+        });
+
         self.map.setCenter(floc.getPosition());
-        floc.setIcon('images/location.png');
 
         google.maps.event.addListener(floc, 'click', function(){
             var url = 'https://www.google.com/maps/dir/';
@@ -221,11 +244,9 @@ app.factory('map', ['group', 'memory', function(group, memory){
                 lng: group.members[memory.name].lng
             };
             url += userLocation.lat + ',' + userLocation.lng;
-            url += '/' + location.name.replace(/ /g, '+');
+            url += '/' + group.location.name.replace(/ /g, '+');
             window.open(url);
         });
-        if(!group.finalized())
-            group.finalLocation(floc);
     };
 
     self.removePerson = function(key){
@@ -245,6 +266,10 @@ app.factory('map', ['group', 'memory', function(group, memory){
         group.onUpdate(updatePeople);
     };
 
+    self.onChoose = function(f){
+        useResult = f;
+    };
+
     return self;
 }]);
 
@@ -262,3 +287,5 @@ function getNewColor(hue){
     console.log(this.colors);
     return color;
 }
+
+var useResult = function(){};

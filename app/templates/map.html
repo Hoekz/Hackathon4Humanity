@@ -48,7 +48,10 @@
 			</div>
 			<div class="submenu" id="placeSubMenu">
 				<div ng-click="expand('placeSubMenu')"><span class="mdi mdi-chevron-right"></span><span><h3>Acceptable Meetings Places</h3></span></div>
-				<div ng-repeat="type in types" class="checkbox-parent layout horizontal" ng-class="{checked: type.value}" ng-click="toggleVote($index, type.type)">
+				<div ng-repeat="type in types"
+					 class="checkbox-parent layout horizontal"
+					 ng-class="{checked: type.value}"
+					 ng-click="toggleVote($index, type.type)">
 					<i class="mdi mdi-checkbox-blank-outline" ng-show="!type.value"></i>
 					<i class="mdi mdi-checkbox-marked" ng-show="type.value"></i>
 					<div>{{type.name}}</div>
