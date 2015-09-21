@@ -23,6 +23,10 @@
 	width:1.5rem;
 	cursor:pointer;
 }
+#meetings-action-bar > .mdi-alert-circle:hover {
+	background:rgba(0, 0, 0, .25);
+	border-radius:3px;
+}
 #meetings-fab-holder {
 	position:absolute;
 	bottom:-5.5rem;
@@ -108,6 +112,10 @@
 	top:1rem;
 	left:1.75rem;
 	margin:0;
+	max-width:calc(100% - 6rem);
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
 }
 .meeting-list-entry .date {
 	position:absolute;
@@ -127,13 +135,14 @@
 	bottom:1rem;
 	left:1.75rem;
 	width:80vw;
-	max-width:calc(100vw - 14rem);
+	max-width:calc(100% - 11rem);
 	background:transparent;
 	border:none;
+	overflow:hidden;
 }
 .sub1, .sub2, .sub3 {
 	margin-left:1rem;
-	margin-bottom:.5rem;
+	margin-bottom:1rem;
 	opacity:.65;
 }
 .sub1 {
@@ -153,4 +162,36 @@
 }
 .meeting-list-entry.closed {
 	order:6;
+}
+#about-overlay {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	background:transparent;
+	z-index:10;
+}
+#about-overlay.open {
+	bottom:0;
+	background: rgba(0, 0, 0, .01);
+}
+#about-page {
+	position:absolute;
+	z-index:11;
+	top:1.25rem;
+	right:1.5rem;
+	width:480px;
+	max-width:calc(100% - 3rem);
+	background:#F2F5F7;
+	color: #F97B66;
+	transform-origin:95% 1rem;
+	transform:scale(0);
+	transition: transform .5s, border-bottom-left-radius .75s, border-top-left-radius .75s, border-bottom-right-radius .75s;
+	border-bottom-left-radius: 85%;
+	border-top-left-radius:50%;
+	border-bottom-right-radius: 50%;
+}
+#about-overlay.open + #about-page {
+	transform:scale(1);
+	border-radius:3px;
 }

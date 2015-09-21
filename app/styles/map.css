@@ -11,6 +11,8 @@
 }
 #maps-action-bar .meetingName {
     overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
 }
 
 #maps-action-bar .mode{
@@ -82,8 +84,8 @@ input[type='range']{
     top:1rem;
     right:1rem;
     width:480px;
-    max-width:calc(100vw - 2rem);
-    max-height:calc(100vh - 6rem);
+    max-width:calc(100% - 2rem);
+    max-height:calc(100% - 1rem);
     padding:1rem;
     background:#21293a;
     border-radius:.5rem;

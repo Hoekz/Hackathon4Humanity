@@ -39,6 +39,10 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 		$scope.title = "Meetings";
 	};
 
+	$scope.toggleAboutPage = function() {
+		document.querySelector("#about-overlay").classList.toggle("open");
+	}
+
 	$scope.genUrl = function(){
 		if(!$scope.name){
 			return error("We need your name to distinguish who's who in the group.");

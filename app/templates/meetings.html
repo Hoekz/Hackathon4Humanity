@@ -1,8 +1,10 @@
+<div ng-click="toggleAboutPage()" id="about-overlay"></div>
+<div id="about-page" ng-include="'../templates/about.html'"></div>
 <div id="meetings-action-bar" class="layout horizontal center shadow-1">
 	<i class="mdi mdi-arrow-left" ng-class="{show: isAdding}" ng-click="hideAddPage()"></i>
 	<div>{{title}}</div>
 	<span class="flex"></span>
-	<i class="mdi mdi-dots-vertical"></i>
+	<i ng-click="toggleAboutPage()" class="mdi mdi-alert-circle"></i>
 </div>
 <div id="meetings-fab-holder" ng-class="{inverse: isAdding}">
 	<div id="meetings-new-fab" class="noselect shadow-2" ng-click="toggleAddPage()">
@@ -23,7 +25,7 @@
 		<h3 class="name">{{meeting.name}}</h3>
 		<div class="date">Created: {{meeting.date}}</div>
 		<div class="participants"><div class="mdi mdi-account"></div><span>{{meeting.members}}</span></div>
-		<div class="url">centerofus.firebaseapp.com/#/groups/{{meeting.id}}</div>
+		<div class="url">/groups/{{meeting.id}}</div>
 	</a>
 </div>
 <div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
