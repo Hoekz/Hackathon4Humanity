@@ -35,7 +35,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
 
     $scope.search = function(){
         map.search(function(results){
-            $scope.results = results;
+            map.setLocations(results);
         });
     };
 
@@ -98,6 +98,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
                 });
             }
         }
+        $scope.search();
     };
 
     $scope.toggleVote = function(i, type){
@@ -106,15 +107,10 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
         memory.groups[group.id()].votes[type] = $scope.types[i].value;
     };
 
-    $scope.showResult = function(result){
-        $scope.mode = 'map';
-        map.setLocation(result);
-    };
-
     group.onUpdate($scope.updateList);
 
-    var map = document.querySelector('#map-view');
-    if(!map.hasChildNodes()){
+    var mapView = document.querySelector('#map-view');
+    if(!mapView.hasChildNodes()){
         map.createMap();
     }
 }]);

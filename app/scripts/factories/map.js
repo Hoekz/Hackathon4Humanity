@@ -3,7 +3,8 @@ app.factory('map', ['group', 'memory', function(group, memory){
     self.map = null;
     var useCurrent = memory.useCurrent = memory.useCurrent || true;
     var people = {};
-    var loc = null;
+    var loc = [];
+    var iWindow = null;
 
     var rad = function(x){return x * Math.PI / 180;};
     var distance = function(p1, p2){
@@ -187,17 +188,33 @@ app.factory('map', ['group', 'memory', function(group, memory){
         }
     };
 
-    self.setLocation = function(location){
-        loc = new google.maps.Marker({
-            title: location.name,
-            position: location.geometry.location,
-            map: self.map,
-            icon: 'images/location.png'
-        });
+    self.setLocations = function(locations){
+        if(!iWindow){
+            iWindow = new google.maps.InfoWindow({content: "", maxWidth: 300});
+        }
+        var listener = function(e){
+            iWindow.setContent("");
+        };
 
-        self.map.setCenter(loc.getPosition());
+        for(var i = 0; i < loc.length; i++){
+            loc[i].setMap(null);
+        }
+        loc = [];
+        for(var i = 0; i < locations.length; i++) {
+            loc.push(new google.maps.Marker({
+                title: locations[i].name,
+                position: locations[i].geometry.location,
+                map: self.map,
+                icon: generateImageUrl(i + 1 + "", true)
+            }));
+        }
+    };
 
-        google.maps.event.addListener(loc, 'click', function(){
+    self.finalLocation = function(floc){
+        self.map.setCenter(floc.getPosition());
+        floc.setIcon('images/location.png');
+
+        google.maps.event.addListener(floc, 'click', function(){
             var url = 'https://www.google.com/maps/dir/';
             var userLocation = {
                 lat: group.members[memory.name].lat,
@@ -207,6 +224,8 @@ app.factory('map', ['group', 'memory', function(group, memory){
             url += '/' + location.name.replace(/ /g, '+');
             window.open(url);
         });
+        if(!group.finalized())
+            group.finalLocation(floc);
     };
 
     self.removePerson = function(key){
@@ -239,6 +258,7 @@ function getNewColor(hue){
         this.count[hue] = 0;
     }
     var color = this.colors[hue][this.count[hue]];
-    this.count[hue]++;
+    this.count[hue] = (this.count[hue] + 1) % 18;
+    console.log(this.colors);
     return color;
 }
