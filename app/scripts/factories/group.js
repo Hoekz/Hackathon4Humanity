@@ -68,9 +68,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
 
     self.updateVotes = function(type, state){
         root[id].options.types[type] += state ? 1 : -1;
-        root.$save().then(function(){
-
-        });
+        root.$save();
     };
 
     self.joinGroup = function(person, success){
@@ -112,6 +110,11 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
     self.toggleIgnore = function(person){
         group.members[person].ignore = !group.members[person].ignore;
         group.$save();
+    };
+
+    self.updateRadius = function(r){
+        root[id].options.radius = r;
+        root.$save();
     };
 
     self.leaveGroup = function(person, success){

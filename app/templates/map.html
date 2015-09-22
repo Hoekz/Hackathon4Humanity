@@ -59,7 +59,7 @@
 			</div>
 			<div class="submenu" id="rangeSubMenu">
 				<div ng-click="expand('rangeSubMenu')"><span class="mdi mdi-chevron-right"></span><span><h3>Search Radius: {{radius + ((radius==1) ? ' mile' : ' miles')}}</h3></span></div>
-				<input type="range" max="10" min="1" ng-model="radius">
+				<input type="range" max="10" min="1" ng-model="radius" ng-change="updateRadius()">
 			</div>
 		</div>
 	</div>

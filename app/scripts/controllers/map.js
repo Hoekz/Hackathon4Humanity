@@ -38,6 +38,10 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
         if(group.finalized()) map.finalLocation();
     };
 
+    $scope.updateRadius = function(){
+        group.updateRadius($scope.radius);
+    };
+
     group.onUpdate($scope.updateList);
 
     group.members = [];
