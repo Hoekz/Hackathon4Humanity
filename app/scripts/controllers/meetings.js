@@ -51,7 +51,7 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 		}
 		for(var i = 0; i < categories.length; i++){
 			if(categories[i].approved){
-				return map.requestLocation(createGroup);
+				return createGroup();
 			}
 		}
 		return error("You have not selected any categories.");
@@ -93,4 +93,18 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
 			return location;
 		});
 	};
+
+	setTimeout(function(){
+		map.requestLocation(function(location){
+			var preview = new google.maps.Map(document.getElementById('map-preview'), {
+				center: location,
+				zoom: 16,
+				disableDefaultUI: true
+			});
+			new google.maps.Marker({
+				map: preview,
+				position: preview.getCenter()
+			});
+		});
+	}, 500);
 }]);

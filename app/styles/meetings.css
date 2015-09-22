@@ -86,8 +86,15 @@
 	left:0;
 	right:0;
 	height:40vh;
-	padding:2rem;
+	padding: 0 1rem;
 	background:#FCC04F;
+}
+#map-preview{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 #meetings-new-page label {
 	margin:.25rem 0;
