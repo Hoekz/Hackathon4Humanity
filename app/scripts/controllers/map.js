@@ -118,6 +118,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
         for(var i = 0; i < $scope.results.length; i++){
             if($scope.results[i].id == id){
                 group.finalLocation($scope.results[i]);
+                setup();
                 return null;
             }
         }
