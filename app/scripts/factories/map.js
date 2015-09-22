@@ -228,6 +228,10 @@ app.factory('map', ['group', 'memory', function(group, memory){
 
     self.finalLocation = function(){
         if(floc) return null;
+        for(var i = 0; i < loc.length; i++){
+            loc[i].setMap(null);
+        }
+        loc = [];
         floc = new google.maps.Marker({
             position: new google.maps.LatLng(group.location.lat, group.location.lng),
             icon: 'images/location.png',
