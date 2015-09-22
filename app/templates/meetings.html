@@ -21,14 +21,14 @@
 	<a class="meeting-list-entry"
 		 href="#/group/{{meeting.id}}"
 		 ng-repeat="meeting in meetings"
-		 ng-class="{creator: meeting.creator}">
+		 ng-class="{creator: meeting.creator, closed: meeting.closed}">
 		<h3 class="name">{{meeting.name}}</h3>
 		<div class="date">Created: {{meeting.date}}</div>
 		<div class="participants"><div class="mdi mdi-account"></div><span>{{meeting.members}}</span></div>
-		<div class="url">/groups/{{meeting.id}}</div>
+		<div class="url">/group/{{meeting.id}}</div>
 	</a>
 </div>
-<div id="meetings-new-page" class="layout vertical scroll" ng-class="{show:isAdding}">
+<div id="meetings-new-page" ng-class="{show:isAdding}">
 	<div id="meetings-location-map">
 		<h2>Your Location</h2>
 	</div>
@@ -44,7 +44,7 @@
 		<span></span>
 	</div>
 	<h2>Meeting Locations</h2>
-	<label ng-repeat="location in locationTypes" title="{{location.googleId}}">
+	<label style="display:block" ng-repeat="location in locationTypes" title="{{location.googleId}}">
 		<input type="checkbox" ng-model="location.approved">
 		<span class="mdi mdi-checkbox-blank-outline" ng-hide="location.approved"></span>
 		<span class="mdi mdi-checkbox-marked" ng-show="location.approved"></span>

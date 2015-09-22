@@ -85,6 +85,7 @@ app.controller('map', ['$scope', 'group', 'map', 'memory', '$location', function
             group.online(memory.name);
             memory.groups[group.id().toString()] = {
                 name: group.name,
+                closed: group.closed,
                 date: new Date(group.timestamp).toISOString().substr(5, 5).replace("-", "/"),
                 members: objsize(group.members),
                 creator: group.members[memory.name].creator,

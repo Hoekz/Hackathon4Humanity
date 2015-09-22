@@ -133,6 +133,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             groupWatch.$watch(function(){
                 if(group){
                     group = groupWatch;
+                    self.closed = group.closed;
                     self.name = group.name;
                     self.members = group.members;
                     self.options = group.options;
@@ -161,6 +162,7 @@ app.factory('group', ['$firebaseObject', '$routeParams', '$interval', '$location
             lng: floc.geometry.location.L,
             name: floc.name
         };
+        root[id].closed = true;
         root.$save();
     };
 

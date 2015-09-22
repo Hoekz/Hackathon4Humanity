@@ -9,12 +9,14 @@ app.controller('meetings', ["$scope", 'memory', 'categories', 'group', 'map', '$
     for(var prop in memory.groups){
         $scope.meetings.push({
             id: prop,
+            closed: memory.groups[prop].closed,
             name: memory.groups[prop].name,
             creator: memory.groups[prop].creator,
             date: memory.groups[prop].date,
             members: memory.groups[prop].members
         });
     }
+    console.log(memory.groups);
     $scope.name = memory.name;
 
 	var error = function(str){
